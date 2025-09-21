@@ -1,120 +1,95 @@
 <!DOCTYPE html>
-<!-- Bu satır HTML5 kullanıldığını belirtiyor, tarayıcıya sayfanın türünü söyler -->
+<!-- HTML5 standardı -->
 
 <html lang="tr">
-<!-- lang="tr" sayfanın dilinin Türkçe olduğunu belirtiyor -->
+<!-- lang="tr" sayfanın dilini belirtir -->
 
 <head>
-  <!-- HEAD bölümü: Sayfanın görünmeyen ayarlarının yapıldığı kısım -->
-
   <meta charset="UTF-8">
-  <!-- Türkçe karakterlerin (ç, ğ, ü, ş, ö, ı) doğru görüntülenmesini sağlıyor -->
+  <!-- Türkçe karakter desteği -->
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Mobil cihazlarda sayfanın düzgün ölçek ayarını yarlar -->
+  <!-- Mobil cihazlarda düzgün görünüm -->
 
-  <title>Ahmet Taştan Hocam İçin Sitem</title>
-  <!-- Tarayıcı sekmesinde görünecek başlık -->
+  <title>Ana Sayfa - Ege</title>
+  <!-- Tarayıcı sekmesinde görünen başlık -->
 
   <style>
-    /* CSS burada yazılıyor */
-    
+    /* CSS kodları – tüm sayfalar aynı stilleri kullanıyor */
+
     body {
-      /* Sayfa gövdesi (tüm ekran) için genel ayarlar */
-      font-family: Arial, sans-serif; /* Kullandığım uazı tipi */
+      font-family: Arial, sans-serif; /* Yazı tipi */
       margin: 0; /* Dış boşluk yok */
       padding: 0; /* İç boşluk yok */
-      background-color: #f4f4f4; /* Açık gri arka plan için renk kodu */
-      color: #333; /* Koyu gri yazı rengi */
+      background-color: #f4f4f4; /* Açık gri arka plan */
+      color: #333; /* Koyu gri yazılar */
     }
 
     header {
-      /* Sayfanın üst kısmı-Başlığı */
-      background-color: #333; /* Koyu gri arka plan için seçtiğim renk kodu */
-      color: #fff; /* Beyaz yazı rengi */
+      background-color: #333; /* Koyu gri arka plan */
+      color: #fff; /* Beyaz yazılar */
       padding: 1.5rem; /* İç boşluk */
-      text-align: center; /* Ortalanmış metin */
+      text-align: center; /* Ortalanmış yazılar */
     }
 
     nav {
-      /* Navigasyon (menü çubuğu) */
-      background-color: #444; /* Biraz daha açık gri */
-      display: flex; /* Menü elemanlarını yatay dizen kod */
-      justify-content: center; /* Ortalar */
+      background-color: #444; /* Menü çubuğu rengi */
+      display: flex; /* Yatay düzen */
+      justify-content: center; /* Ortalanmış menü */
     }
 
     nav a {
-      /* Menüdeki bağlantılar */
-      color: #fff; /* Beyaz metin */
+      color: #fff; /* Menü linklerinin rengi */
       text-decoration: none; /* Alt çizgi yok */
       padding: 1rem; /* İç boşluk */
-      transition: background 0.3s; /* Üzerine gelince animasyon */
+      transition: background 0.3s; /* Hover efekti */
     }
 
     nav a:hover {
-      /* Menüde bağlantı üzerine gelince */
-      background-color: #666; /* Renk değiştir */
+      background-color: #666; /* Üzerine gelince renk değişir */
     }
 
     main {
-      /* Ana içerik bölümü */
       padding: 2rem; /* İç boşluk */
-      max-width: 900px; /* Max genişlik */
-      margin: auto; /* Ortalar */
-      background-color: #fff; /* Beyaz arka plan */
+      max-width: 900px; /* İçeriğin genişliği */
+      margin: auto; /* Ortalamak için */
+      background-color: #fff; /* Beyaz kutu arka plan */
       box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Hafif gölge efekti */
     }
 
     footer {
-      /* Sayfanın en alt kısmı */
-      text-align: center; /* Ortalanmış metin */
+      text-align: center; /* Ortalanmış yazı */
       padding: 1rem; /* İç boşluk */
       background-color: #333; /* Koyu gri arka plan */
-      color: #fff; /* Beyaz yazı */
+      color: #fff; /* Beyaz yazılar */
       margin-top: 2rem; /* Üstten boşluk */
     }
   </style>
 </head>
 
 <body>
-  <!-- BODY: Kullanıcıya görünen tüm içerik buraya gelir -->
+  <!-- Kullanıcıya görünen kısım -->
 
   <header>
-    <!-- Sayfanın en üst kısmı -->
-    <h1>Ahmet Hocam İçin Web Sitem</h1>
-    <!-- Büyük başlık -->
-    <p>İçeriğe karar veremedim, yakında dolduracağım.</p>
-    <!-- Alt başlık/paragraf -->
+    <h1>Hoşgeldiniz!</h1>
+    <p>Benim çok sayfalı web siteme hoşgeldiniz 👾</p>
   </header>
 
   <nav>
-    <!-- Sayfanın gezinme menüsü -->
-    <a href="#hakkimda">Hakkımda</a>
-    <!-- href="#idAdı" ile sayfa içindeki bölümlere atlanır -->
-    <a href="#projeler">Projeler</a>
-    <a href="#iletisim">İletişim</a>
+    <!-- Menü bağlantıları -->
+    <a href="index.html">Ana Sayfa</a>
+    <a href="hakkimda.html">Hakkımda</a>
+    <a href="projeler.html">Projeler</a>
+    <a href="iletisim.html">İletişim</a>
   </nav>
 
   <main>
-    <!-- Sayfanın ana içeriği -->
+    <h2>Ana Sayfa</h2>
+    <p>Burası giriş sayfam. Menüden diğer bölümlere geçebilirsin.</p>
+  </main>
 
-    <section id="hakkimda">
-      <!-- "Hakkımda" bölümü, id sayesinde menüden buraya atlanabilir -->
-      <h2>Hakkımda</h2>
-      <!-- Orta boy başlık -->
-      <p>Merhaba! Ben Ege.</p>
-      <!-- Açıklayıcı paragraf -->
-    </section>
-
-    <section id="projeler">
-      <!-- "Projeler" bölümü -->
-      <h2>Projeler</h2>
-      <ul>
-        <!-- Sırasız liste -->
-        <li>holololo</li>
-        <li>hülülüü</li>
-        <li>helelelle</li>
-      </ul>
-    </section>
-
-    <section id="iletisim">
+  <footer>
+    <p>© 2025 Ege</p>
+  </footer>
+</body>
+</html>
