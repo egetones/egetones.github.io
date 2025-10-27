@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <!-- HTML5 standardı -->
-
 <html lang="tr">
 <!-- lang="tr" sayfanın dilini belirtir -->
 
@@ -11,85 +10,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Mobil cihazlarda düzgün görünüm -->
 
-  <title>Ana Sayfa - Ege</title>
+  <title>İyi ki Doğdun Vintor!</title>
   <!-- Tarayıcı sekmesinde görünen başlık -->
 
   <style>
-    /* CSS kodları – tüm sayfalar aynı stilleri kullanıyor */
+    /* CSS kodları – Doğum günü özel sayfası */
 
     body {
-      font-family: Arial, sans-serif; /* Yazı tipi */
+      /* "Eğlenceli" bir yazı tipi. Bulamazsa standart tiplere geçer. */
+      font-family: 'Comic Sans MS', 'Chalkduster', 'cursive', sans-serif;
       margin: 0; /* Dış boşluk yok */
       padding: 0; /* İç boşluk yok */
-      background-color: #f4f4f4; /* Açık gri arka plan */
-      color: #333; /* Koyu gri yazılar */
-    }
-
-    header {
-      background-color: #333; /* Koyu gri arka plan */
+      background-color: #000; /* İstenen siyah arka plan */
       color: #fff; /* Beyaz yazılar */
-      padding: 1.5rem; /* İç boşluk */
-      text-align: center; /* Ortalanmış yazılar */
+      display: flex; /* İçeriği ortalamak için flexbox kullan */
+      flex-direction: column; /* Öğeleri dikeyde hizala */
+      justify-content: center; /* Dikeyde ortala */
+      align-items: center; /* Yatayda ortala */
+      min-height: 100vh; /* Ekranın tamamını kapla */
+      text-align: center; /* Yazıyı ortala */
+      overflow: hidden; /* Animasyon taşmasın */
     }
 
-    nav {
-      background-color: #444; /* Menü çubuğu rengi */
-      display: flex; /* Yatay düzen */
-      justify-content: center; /* Ortalanmış menü */
+    .birthday-message {
+      /* Mesajın ana stilini belirle */
+      font-size: 3.5rem; /* Büyük yazı tipi */
+      font-weight: bold;
+      line-height: 1.4; /* Satır aralığı */
+      padding: 2rem; /* Kenarlardan boşluk */
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Yazıya hafif gölge */
+      
+      /* Havalı bir renk değiştirme animasyonu */
+      animation: color-cycle 4s infinite linear;
     }
 
-    nav a {
-      color: #fff; /* Menü linklerinin rengi */
-      text-decoration: none; /* Alt çizgi yok */
-      padding: 1rem; /* İç boşluk */
-      transition: background 0.3s; /* Hover efekti */
+    /* Farklı ekran boyutları için yazı tipini ayarla (Responsive tasarım) */
+    @media (max-width: 768px) {
+      .birthday-message {
+        font-size: 2.5rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .birthday-message {
+        font-size: 1.8rem;
+      }
     }
 
-    nav a:hover {
-      background-color: #666; /* Üzerine gelince renk değişir */
+    /* Gökkuşağı renk döngüsü animasyonu */
+    @keyframes color-cycle {
+      0%   { color: #ff0000; } /* Kırmızı */
+      15%  { color: #ff7f00; } /* Turuncu */
+      30%  { color: #ffff00; } /* Sarı */
+      45%  { color: #00ff00; } /* Yeşil */
+      60%  { color: #0000ff; } /* Mavi */
+      75%  { color: #4b0082; } /* İndigo */
+      90%  { color: #8f00ff; } /* Mor */
+      100% { color: #ff0000; } /* Tekrar Kırmızı */
     }
 
-    main {
-      padding: 2rem; /* İç boşluk */
-      max-width: 900px; /* İçeriğin genişliği */
-      margin: auto; /* Ortalamak için */
-      background-color: #fff; /* Beyaz kutu arka plan */
-      box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Hafif gölge efekti */
-    }
-
-    footer {
-      text-align: center; /* Ortalanmış yazı */
-      padding: 1rem; /* İç boşluk */
-      background-color: #333; /* Koyu gri arka plan */
-      color: #fff; /* Beyaz yazılar */
-      margin-top: 2rem; /* Üstten boşluk */
-    }
   </style>
 </head>
 
 <body>
   <!-- Kullanıcıya görünen kısım -->
+  
+  <!-- Doğum günü mesajı, <br> etiketi ile iki satıra bölünmüş -->
+  <div class="birthday-message">
+    iyi ki doğdun zındık vintor,
+    <br>
+    doom günün kutlu ossun mcık
+  </div>
 
-  <header>
-    <h1>Hoşgeldiniz!</h1>
-    <p>Benim çok sayfalı web siteme hoşgeldiniz 👾</p>
-  </header>
-
-  <nav>
-    <!-- Menü bağlantıları -->
-    <a href="index.html">Ana Sayfa</a>
-    <a href="hakkimda.html">Hakkımda</a>
-    <a href="projeler.html">Projeler</a>
-    <a href="iletisim.html">İletişim</a>
-  </nav>
-
-  <main>
-    <h2>Ana Sayfa</h2>
-    <p>Burası giriş sayfam. Menüden diğer bölümlere geçebilirsin.</p>
-  </main>
-
-  <footer>
-    <p>© 2025 Ege</p>
-  </footer>
 </body>
 </html>
