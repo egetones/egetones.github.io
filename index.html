@@ -32,6 +32,17 @@
       overflow: hidden; /* Animasyon taşmasın */
     }
 
+    /* Konfeti kanvası için stil */
+    #confetti-canvas {
+      position: fixed; /* Ekranı kaplaması için */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1; /* Yazının arkasında kalacak (en altta) */
+      pointer-events: none; /* Tıklamaları engellemesin */
+    }
+
     .birthday-message {
       /* Mesajın ana stilini belirle */
       font-size: 3.5rem; /* Büyük yazı tipi */
@@ -40,8 +51,12 @@
       padding: 2rem; /* Kenarlardan boşluk */
       text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Yazıya hafif gölge */
       
-      /* Havalı bir renk değiştirme animasyonu */
-      animation: color-cycle 4s infinite linear;
+      /* Konfetinin önünde durması için */
+      position: relative; 
+      z-index: 2;
+
+      /* İki animasyonu birleştir: Renk döngüsü VE sallanma */
+      animation: color-cycle 4s infinite linear, wobble 1.5s infinite ease-in-out;
     }
 
     /* Farklı ekran boyutları için yazı tipini ayarla (Responsive tasarım) */
@@ -69,11 +84,22 @@
       100% { color: #ff0000; } /* Tekrar Kırmızı */
     }
 
+    /* Yazı sallanma (wobble) animasyonu */
+    @keyframes wobble {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(-4deg) scale(1.1); }
+      50% { transform: rotate(4deg) scale(1.1); }
+      75% { transform: rotate(-2deg) scale(1); }
+    }
+
   </style>
 </head>
 
 <body>
   <!-- Kullanıcıya görünen kısım -->
+
+  <!-- Konfeti efekti için kanvas elementi -->
+  <canvas id="confetti-canvas"></canvas>
   
   <!-- Doğum günü mesajı, <br> etiketi ile iki satıra bölünmüş -->
   <div class="birthday-message">
@@ -82,5 +108,92 @@
     doom günün kutlu ossun mcık
   </div>
 
+  <!-- Konfeti animasyonu için JavaScript kodu -->
+  <script>
+    (function() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+
+      let W = window.innerWidth;
+      let H = window.innerHeight;
+      canvas.width = W;
+      canvas.height = H;
+
+      const maxConfettis = 150;
+      const confettis = [];
+      const colors = [
+        "#ff0000", "#ff7f00", "#ffff00", "#00ff00", 
+        "#0000ff", "#4b0082", "#8f00ff"
+      ];
+
+      function randomRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function Confetti() {
+        this.x = Math.random() * W; // x
+        this.y = Math.random() * H - H; // y
+        this.r = randomRange(10, 20); // boyut
+        this.d = Math.random() * maxConfettis; // yoğunluk
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.speed = randomRange(2, 4);
+        this.tilt = Math.random() * 10 - 5;
+        this.tiltSpeed = Math.random() * 0.1 - 0.05;
+      }
+
+      Confetti.prototype.update = function() {
+        this.y += this.speed;
+        this.x += Math.sin(this.y * 0.1 + this.d) * 2;
+        this.tilt += this.tiltSpeed;
+        
+        if (this.y > H) {
+          // Yeniden başlat
+          this.x = Math.random() * W;
+          this.y = -20;
+        }
+      };
+
+      Confetti.prototype.draw = function() {
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.y / H; // Düşerken belirginleşsin
+        ctx.save();
+        ctx.translate(this.x + this.r / 2, this.y + this.r / 2);
+        ctx.rotate(this.tilt * Math.PI / 180);
+        ctx.fillRect(-this.r / 2, -this.r / 2, this.r, this.r);
+        ctx.restore();
+      };
+
+      function initConfetti() {
+        for (let i = 0; i < maxConfettis; i++) {
+          confettis.push(new Confetti());
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, W, H);
+        
+        for (let i = 0; i < confettis.length; i++) {
+          confettis[i].update();
+          confettis[i].draw();
+        }
+        
+        requestAnimationFrame(animate);
+      }
+
+      // Ekran yeniden boyutlandırıldığında ayarla
+      window.onresize = function() {
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = W;
+        canvas.height = H;
+      };
+
+      initConfetti();
+      animate();
+    })();
+  </script>
+
 </body>
 </html>
+
