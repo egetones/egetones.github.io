@@ -1,273 +1,109 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Kasımpatı Buketi — Vitrin</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kasımpatı Buketi</title>
 <style>
-  :root{
-    --petrol-dark: #04282a; /* petrol-siyahı arka plan */
-    --accent-glow: rgba(255,200,200,0.12);
-    --paper: #f3e0c8;
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #04282a; /* petrol siyahı */
+    overflow: hidden;
   }
-
-  /* Reset */
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-
-  body{
-    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background:
-      radial-gradient(1200px 600px at 10% 10%, rgba(0,0,0,0.18), transparent 10%),
-      radial-gradient(900px 400px at 95% 90%, rgba(0,0,0,0.12), transparent 10%),
-      var(--petrol-dark);
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:40px;
-  }
-
-  /* Kart konteyneri */
-  .showcase {
-    width:min(1100px, 96vw);
-    max-width:1200px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
-    padding:48px;
-    border-radius:20px;
-    position:relative;
-    overflow:visible;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-shadow:
-      0 30px 80px rgba(0,0,0,0.6),
-      0 6px 20px rgba(0,0,0,0.5),
-      0 0 60px rgba(0,0,0,0.25) inset;
-    border:1px solid rgba(255,255,255,0.03);
-  }
-
-  /* Başlık (opsiyonel, vitrinde küçük kurumsal dokunuş) */
-  .brand {
-    position:absolute;
-    left:36px;
-    top:18px;
-    font-weight:700;
-    letter-spacing:1px;
-    font-size:18px;
-    color: rgba(255,255,255,0.92);
-    text-transform:uppercase;
-  }
-
-  /* Buket bölümü */
-  .buket-wrap{
-    position:relative;
-    width:min(72%, 860px);
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-    gap:20px;
-    transform:translateY(0);
-  }
-
-  /* Çiçek görseli */
-  .buket {
-    width:80%;
-    max-width:740px;
-    aspect-ratio: 4/3;
-    display:block;
-    border-radius:18px;
-    object-fit:cover;
-    transform-origin:center bottom;
-    filter: saturate(1.06) contrast(1.02) drop-shadow(0 35px 60px rgba(0,0,0,0.7));
-    transition: transform 350ms cubic-bezier(.2,.9,.2,1);
-    border: 8px solid rgba(255,255,255,0.03);
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
-  }
-
-  .buket:hover{
-    transform: translateY(-8px) scale(1.02);
-    filter: saturate(1.12) contrast(1.06) drop-shadow(0 46px 80px rgba(0,0,0,0.75));
-  }
-
-  /* Buketi saran zarif hediye kağıdı efekti (pseudo elemanlarla) */
-  .buket-frame{
-    position:absolute;
-    width:82%;
-    max-width:760px;
-    height:88%;
-    bottom:6%;
-    pointer-events:none;
-    display:block;
-    transform:translateY(6px);
-  }
-  .buket-frame::before,
-  .buket-frame::after{
-    content:"";
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-    border-radius:16px;
-    z-index:1;
-  }
-  /* Üst kağıt kıvrımı */
-  .buket-frame::before{
-    width:115%;
-    height:56%;
-    bottom:44%;
-    background: linear-gradient(200deg, rgba(243,224,200,0.95), rgba(230,200,170,0.9));
-    box-shadow: 0 30px 38px rgba(0,0,0,0.48);
-    clip-path: ellipse(70% 60% at 50% 20%);
-    transform-origin:center bottom;
-    opacity:0.98;
-    border:1px solid rgba(0,0,0,0.03);
-  }
-  /* Alt kağıt - kuyruk kısmı */
-  .buket-frame::after{
-    width:36%;
-    height:44%;
-    bottom:-6%;
-    background: linear-gradient(180deg, rgba(230,200,170,0.98), rgba(200,170,140,0.95));
-    transform: translateX(-50%) rotate(-6deg);
-    box-shadow: 0 28px 40px rgba(0,0,0,0.5);
-    border:1px solid rgba(0,0,0,0.04);
-  }
-
-  /* Kurdele */
-  .ribbon {
-    position:absolute;
-    bottom: -2%;
-    left:50%;
-    transform:translateX(-50%);
-    z-index:3;
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-  .ribbon .bow{
-    width:190px;
-    height:46px;
-    border-radius:32px;
-    background: linear-gradient(90deg, #b15d7a, #e0636b);
-    box-shadow: 0 6px 20px rgba(224,90,110,0.32);
-    transform:translateY(-6px) rotate(-6deg);
-    border:1px solid rgba(255,255,255,0.06);
-  }
-  .ribbon .tail{
-    width:28px;
-    height:72px;
-    background: linear-gradient(180deg, #b15d7a, #8a3950);
-    transform:translateY(-2px);
-    border-radius:8px;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.5);
-  }
-
-  /* Parçacıklar / uçuşan yapraklar */
-  .petals {
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    z-index:2;
-    overflow:hidden;
-  }
-
-  .petal{
-    position:absolute;
-    width:12px;
-    height:18px;
-    background: linear-gradient(180deg, rgba(255,230,240,0.98), rgba(255,200,210,0.95));
-    opacity:0.95;
-    border-radius:8px 8px 8px 4px;
-    transform-origin:center;
-    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)) saturate(1.05);
-    animation: floatPetal var(--dur, 6s) linear infinite;
-  }
-
-  /* varyasyonlar: renk, boyut, süre, delay */
-  .petal.y1{ background: linear-gradient(180deg,#ffc0d0,#ff8aa2); width:12px;height:18px; --dur:7.6s; left:18%; top:18%; transform:rotate(18deg); animation-delay: -1s;}
-  .petal.y2{ background: linear-gradient(180deg,#fff9d6,#ffe36a); width:14px;height:20px; --dur:9.2s; left:62%; top:12%; transform:rotate(-8deg); animation-delay: -2.2s;}
-  .petal.y3{ background: linear-gradient(180deg,#fff,#ffe7d7); width:11px;height:16px; --dur:6.4s; left:80%; top:22%; transform:rotate(6deg); animation-delay: -0.8s;}
-  .petal.y4{ background: linear-gradient(180deg,#ffd9a8,#ffb84d); width:16px;height:22px; --dur:10.2s; left:40%; top:8%; transform:rotate(-18deg); animation-delay: -3.4s;}
-  .petal.y5{ background: linear-gradient(180deg,#ffb2c3,#ff5780); width:13px;height:19px; --dur:8.1s; left:28%; top:2%; transform:rotate(26deg); animation-delay: -4.1s;}
-  .petal.y6{ background: linear-gradient(180deg,#f7f7ff,#fff1f8); width:10px;height:14px; --dur:6.8s; left:52%; top:30%; transform:rotate(-12deg); animation-delay: -2.8s;}
-  .petal.y7{ background: linear-gradient(180deg,#f8ffd9,#fff4b0); width:12px;height:18px; --dur:7.9s; left:12%; top:40%; transform:rotate(30deg); animation-delay: -5.3s;}
-  .petal.y8{ background: linear-gradient(180deg,#ffdfe6,#ff93c2); width:15px;height:20px; --dur:9.6s; left:84%; top:44%; transform:rotate(-30deg); animation-delay: -1.1s;}
-
-  @keyframes floatPetal{
-    0%{
-      transform: translateY(0) rotate(0deg) scale(1);
-      opacity:0.0;
-    }
-    6%{ opacity:0.9; }
-    40%{
-      opacity:0.95;
-      transform: translateY(-18vh) rotate(80deg) scale(1.06);
-    }
-    75%{
-      transform: translateY(-42vh) rotate(160deg) scale(0.88);
-      opacity:0.7;
-    }
-    100%{
-      transform: translateY(-80vh) rotate(240deg) scale(0.7);
-      opacity:0;
-    }
-  }
-
-  /* Alt bilgi (opsiyonel) */
-  .caption {
-    position:absolute;
-    right:28px;
-    bottom:22px;
-    background:rgba(0,0,0,0.18);
-    padding:10px 14px;
-    border-radius:10px;
-    font-size:14px;
-    color:rgba(255,255,255,0.9);
-    border:1px solid rgba(255,255,255,0.03);
-    backdrop-filter: blur(4px);
-  }
-
-  /* Küçük ekran düzenlemeleri */
-  @media (max-width:860px){
-    .buket{ width:92%; max-width:640px; }
-    .buket-frame{ width:90%; }
-    .ribbon .bow{ width:140px; height:40px }
-  }
-  @media (max-width:420px){
-    .showcase{ padding:22px; border-radius:14px; }
-    .brand{ left:18px; top:14px; font-size:13px; }
+  canvas {
+    display: block;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
   }
 </style>
 </head>
 <body>
-  <div class="showcase" role="main" aria-label="Kasımpatı Buketi vitrini">
-    <div class="brand">VARKABUKET</div>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+<script>
+let flowers = [];
 
-    <div class="buket-wrap">
-      <!-- Görsel: Lütfen buradaki src'i kendi görselinizle değiştirin -->
-      <img class="buket" src="images/kasimpati-buket.jpg" alt="Pembe, beyaz, sarı ve kırmızı kasımpatı buketi" />
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  noStroke();
+  angleMode(DEGREES);
 
-      <!-- Kağıt & kurdele efektleri -->
-      <div class="buket-frame" aria-hidden="true"></div>
-      <div class="ribbon" aria-hidden="true">
-        <div class="bow" title="Hediyelik kurdele"></div>
-        <div class="tail" ></div>
-      </div>
+  // buket merkezi
+  let centerX = width / 2;
+  let centerY = height / 1.7;
 
-      <!-- Uçuşan yaprak/parçacık efektleri -->
-      <div class="petals" aria-hidden="true">
-        <div class="petal y1"></div>
-        <div class="petal y2"></div>
-        <div class="petal y3"></div>
-        <div class="petal y4"></div>
-        <div class="petal y5"></div>
-        <div class="petal y6"></div>
-        <div class="petal y7"></div>
-        <div class="petal y8"></div>
-      </div>
-    </div>
+  // 25 kadar kasımpatı oluştur
+  for (let i = 0; i < 25; i++) {
+    let offsetX = random(-150, 150);
+    let offsetY = random(-80, 80);
+    let col = random(["#f8cad9", "#ffffff", "#ffe45c", "#ff4d4d"]);
+    flowers.push(new Flower(centerX + offsetX, centerY + offsetY, col));
+  }
+}
 
-    <div class="caption">Canlı renkler: pembe • beyaz • sarı • kırmızı</div>
-  </div>
+function draw() {
+  background(4, 40, 42, 60);
+  translate(0, 20);
+
+  // gövde
+  push();
+  stroke(44, 110, 70);
+  strokeWeight(6);
+  noFill();
+  for (let f of flowers) {
+    bezier(f.x, f.y + 20, f.x, f.y + 80, width/2, height-150, width/2, height);
+  }
+  pop();
+
+  // çiçekleri çiz
+  for (let f of flowers) {
+    f.update();
+    f.display();
+  }
+
+  // hafif parıltı efekti
+  fill(255, 255, 255, 8);
+  ellipse(width/2, height/2, 500, 240);
+}
+
+class Flower {
+  constructor(x, y, col) {
+    this.x = x;
+    this.y = y;
+    this.col = col;
+    this.petals = floor(random(14, 20));
+    this.size = random(20, 35);
+    this.rotation = random(360);
+    this.wave = random(1000);
+  }
+
+  update() {
+    this.rotation += sin(frameCount * 0.5 + this.wave) * 0.05;
+  }
+
+  display() {
+    push();
+    translate(this.x, this.y);
+    rotate(this.rotation);
+    for (let i = 0; i < this.petals; i++) {
+      let angle = (360 / this.petals) * i;
+      let r = this.size + sin(frameCount * 2 + i * 20) * 1.5;
+      let x = cos(angle) * r;
+      let y = sin(angle) * r;
+      fill(this.col);
+      ellipse(x, y, 14, 26);
+    }
+    fill(255, 220, 80);
+    ellipse(0, 0, this.size * 0.8);
+    pop();
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+</script>
 </body>
 </html>
