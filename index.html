@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kasımpatı Buketi</title>
+<title>fedeye</title>
 <style>
   html, body {
     margin: 0;
@@ -30,11 +30,10 @@ function setup() {
   noStroke();
   angleMode(DEGREES);
 
-  // buket merkezi
   let centerX = width / 2;
   let centerY = height / 1.7;
 
-  // 25 kadar kasımpatı oluştur
+  // çiçekler
   for (let i = 0; i < 25; i++) {
     let offsetX = random(-150, 150);
     let offsetY = random(-80, 80);
@@ -47,25 +46,38 @@ function draw() {
   background(4, 40, 42, 60);
   translate(0, 20);
 
-  // gövde
+  let centerX = width / 2;
+  let centerY = height / 1.7;
+
+  // kraft kâğıdı
+  push();
+  noStroke();
+  fill(97, 69, 44, 230); // kahverengi ton
+  beginShape();
+  vertex(centerX - 180, centerY - 40);
+  bezierVertex(centerX - 250, centerY + 180, centerX + 250, centerY + 180, centerX + 180, centerY - 40);
+  endShape(CLOSE);
+  pop();
+
+  // gövdeler
   push();
   stroke(44, 110, 70);
   strokeWeight(6);
   noFill();
   for (let f of flowers) {
-    bezier(f.x, f.y + 20, f.x, f.y + 80, width/2, height-150, width/2, height);
+    bezier(f.x, f.y + 20, f.x, f.y + 80, centerX, height - 150, centerX, height);
   }
   pop();
 
-  // çiçekleri çiz
+  // çiçekler
   for (let f of flowers) {
     f.update();
     f.display();
   }
 
-  // hafif parıltı efekti
+  // parıltı efekti
   fill(255, 255, 255, 8);
-  ellipse(width/2, height/2, 500, 240);
+  ellipse(centerX, height/2, 500, 240);
 }
 
 class Flower {
@@ -80,7 +92,15 @@ class Flower {
   }
 
   update() {
-    this.rotation += sin(frameCount * 0.5 + this.wave) * 0.05;
+    // fare etkisi
+    let d = dist(mouseX, mouseY, this.x, this.y);
+    if (d < 150) {
+      this.rotation += sin(frameCount * 1.5 + this.wave) * 0.3;
+      this.size = lerp(this.size, 40, 0.1);
+    } else {
+      this.rotation += sin(frameCount * 0.5 + this.wave) * 0.05;
+      this.size = lerp(this.size, 30, 0.05);
+    }
   }
 
   display() {
