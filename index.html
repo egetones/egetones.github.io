@@ -1,202 +1,273 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>İyi ki Doğdun Yavrumsum!</title>
-  <style>
-    body {
-      font-family: 'Comic Sans MS', 'Chalkduster', 'cursive', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      text-align: center;
-      overflow: hidden;
-      position: relative; /* Atın konumlandırılması için */
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kasımpatı Buketi — Vitrin</title>
+<style>
+  :root{
+    --petrol-dark: #04282a; /* petrol-siyahı arka plan */
+    --accent-glow: rgba(255,200,200,0.12);
+    --paper: #f3e0c8;
+  }
 
-    #confetti-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none;
-    }
+  /* Reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
 
-    .birthday-message {
-      font-size: 3.5rem;
-      font-weight: bold;
-      line-height: 1.4;
-      padding: 2rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-      position: relative;
-      z-index: 2;
-      animation: color-cycle 4s infinite linear, wobble 1.5s infinite ease-in-out;
-    }
+  body{
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background:
+      radial-gradient(1200px 600px at 10% 10%, rgba(0,0,0,0.18), transparent 10%),
+      radial-gradient(900px 400px at 95% 90%, rgba(0,0,0,0.12), transparent 10%),
+      var(--petrol-dark);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+  }
 
-    .horse-emoji {
-      font-size: 5rem; /* Atın boyutunu ayarla */
-      position: absolute; /* Mesajın yanına konumlandır */
-      bottom: 10%; /* Sayfanın alt kısmına yakın */
-      right: 10%; /* Sağ tarafa yakın */
-      z-index: 2;
-      animation: horse-bounce 1s infinite ease-in-out alternate; /* At için zıplama animasyonu */
-      transform-origin: bottom; /* Animasyonun alt kısımdan başlamasını sağlar */
-    }
+  /* Kart konteyneri */
+  .showcase {
+    width:min(1100px, 96vw);
+    max-width:1200px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+    padding:48px;
+    border-radius:20px;
+    position:relative;
+    overflow:visible;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:
+      0 30px 80px rgba(0,0,0,0.6),
+      0 6px 20px rgba(0,0,0,0.5),
+      0 0 60px rgba(0,0,0,0.25) inset;
+    border:1px solid rgba(255,255,255,0.03);
+  }
 
-    @media (max-width: 768px) {
-      .birthday-message {
-        font-size: 2.5rem;
-      }
-      .horse-emoji {
-        font-size: 3.5rem;
-        bottom: 5%;
-        right: 5%;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .birthday-message {
-        font-size: 1.8rem;
-      }
-      .horse-emoji {
-        font-size: 2.5rem;
-      }
-    }
+  /* Başlık (opsiyonel, vitrinde küçük kurumsal dokunuş) */
+  .brand {
+    position:absolute;
+    left:36px;
+    top:18px;
+    font-weight:700;
+    letter-spacing:1px;
+    font-size:18px;
+    color: rgba(255,255,255,0.92);
+    text-transform:uppercase;
+  }
 
-    @keyframes color-cycle {
-      0%   { color: #ff0000; }
-      15%  { color: #ff7f00; }
-      30%  { color: #ffff00; }
-      45%  { color: #00ff00; }
-      60%  { color: #0000ff; }
-      75%  { color: #4b0082; }
-      90%  { color: #8f00ff; }
-      100% { color: #ff0000; }
-    }
+  /* Buket bölümü */
+  .buket-wrap{
+    position:relative;
+    width:min(72%, 860px);
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    gap:20px;
+    transform:translateY(0);
+  }
 
-    @keyframes wobble {
-      0%, 100% { transform: rotate(0deg) scale(1); }
-      25% { transform: rotate(-4deg) scale(1.1); }
-      50% { transform: rotate(4deg) scale(1.1); }
-      75% { transform: rotate(-2deg) scale(1); }
-    }
+  /* Çiçek görseli */
+  .buket {
+    width:80%;
+    max-width:740px;
+    aspect-ratio: 4/3;
+    display:block;
+    border-radius:18px;
+    object-fit:cover;
+    transform-origin:center bottom;
+    filter: saturate(1.06) contrast(1.02) drop-shadow(0 35px 60px rgba(0,0,0,0.7));
+    transition: transform 350ms cubic-bezier(.2,.9,.2,1);
+    border: 8px solid rgba(255,255,255,0.03);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+  }
 
-    @keyframes horse-bounce {
-      0% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-20px) scale(1.1); }
-      100% { transform: translateY(0) scale(1); }
-    }
-  </style>
+  .buket:hover{
+    transform: translateY(-8px) scale(1.02);
+    filter: saturate(1.12) contrast(1.06) drop-shadow(0 46px 80px rgba(0,0,0,0.75));
+  }
+
+  /* Buketi saran zarif hediye kağıdı efekti (pseudo elemanlarla) */
+  .buket-frame{
+    position:absolute;
+    width:82%;
+    max-width:760px;
+    height:88%;
+    bottom:6%;
+    pointer-events:none;
+    display:block;
+    transform:translateY(6px);
+  }
+  .buket-frame::before,
+  .buket-frame::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    border-radius:16px;
+    z-index:1;
+  }
+  /* Üst kağıt kıvrımı */
+  .buket-frame::before{
+    width:115%;
+    height:56%;
+    bottom:44%;
+    background: linear-gradient(200deg, rgba(243,224,200,0.95), rgba(230,200,170,0.9));
+    box-shadow: 0 30px 38px rgba(0,0,0,0.48);
+    clip-path: ellipse(70% 60% at 50% 20%);
+    transform-origin:center bottom;
+    opacity:0.98;
+    border:1px solid rgba(0,0,0,0.03);
+  }
+  /* Alt kağıt - kuyruk kısmı */
+  .buket-frame::after{
+    width:36%;
+    height:44%;
+    bottom:-6%;
+    background: linear-gradient(180deg, rgba(230,200,170,0.98), rgba(200,170,140,0.95));
+    transform: translateX(-50%) rotate(-6deg);
+    box-shadow: 0 28px 40px rgba(0,0,0,0.5);
+    border:1px solid rgba(0,0,0,0.04);
+  }
+
+  /* Kurdele */
+  .ribbon {
+    position:absolute;
+    bottom: -2%;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:3;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .ribbon .bow{
+    width:190px;
+    height:46px;
+    border-radius:32px;
+    background: linear-gradient(90deg, #b15d7a, #e0636b);
+    box-shadow: 0 6px 20px rgba(224,90,110,0.32);
+    transform:translateY(-6px) rotate(-6deg);
+    border:1px solid rgba(255,255,255,0.06);
+  }
+  .ribbon .tail{
+    width:28px;
+    height:72px;
+    background: linear-gradient(180deg, #b15d7a, #8a3950);
+    transform:translateY(-2px);
+    border-radius:8px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.5);
+  }
+
+  /* Parçacıklar / uçuşan yapraklar */
+  .petals {
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:2;
+    overflow:hidden;
+  }
+
+  .petal{
+    position:absolute;
+    width:12px;
+    height:18px;
+    background: linear-gradient(180deg, rgba(255,230,240,0.98), rgba(255,200,210,0.95));
+    opacity:0.95;
+    border-radius:8px 8px 8px 4px;
+    transform-origin:center;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)) saturate(1.05);
+    animation: floatPetal var(--dur, 6s) linear infinite;
+  }
+
+  /* varyasyonlar: renk, boyut, süre, delay */
+  .petal.y1{ background: linear-gradient(180deg,#ffc0d0,#ff8aa2); width:12px;height:18px; --dur:7.6s; left:18%; top:18%; transform:rotate(18deg); animation-delay: -1s;}
+  .petal.y2{ background: linear-gradient(180deg,#fff9d6,#ffe36a); width:14px;height:20px; --dur:9.2s; left:62%; top:12%; transform:rotate(-8deg); animation-delay: -2.2s;}
+  .petal.y3{ background: linear-gradient(180deg,#fff,#ffe7d7); width:11px;height:16px; --dur:6.4s; left:80%; top:22%; transform:rotate(6deg); animation-delay: -0.8s;}
+  .petal.y4{ background: linear-gradient(180deg,#ffd9a8,#ffb84d); width:16px;height:22px; --dur:10.2s; left:40%; top:8%; transform:rotate(-18deg); animation-delay: -3.4s;}
+  .petal.y5{ background: linear-gradient(180deg,#ffb2c3,#ff5780); width:13px;height:19px; --dur:8.1s; left:28%; top:2%; transform:rotate(26deg); animation-delay: -4.1s;}
+  .petal.y6{ background: linear-gradient(180deg,#f7f7ff,#fff1f8); width:10px;height:14px; --dur:6.8s; left:52%; top:30%; transform:rotate(-12deg); animation-delay: -2.8s;}
+  .petal.y7{ background: linear-gradient(180deg,#f8ffd9,#fff4b0); width:12px;height:18px; --dur:7.9s; left:12%; top:40%; transform:rotate(30deg); animation-delay: -5.3s;}
+  .petal.y8{ background: linear-gradient(180deg,#ffdfe6,#ff93c2); width:15px;height:20px; --dur:9.6s; left:84%; top:44%; transform:rotate(-30deg); animation-delay: -1.1s;}
+
+  @keyframes floatPetal{
+    0%{
+      transform: translateY(0) rotate(0deg) scale(1);
+      opacity:0.0;
+    }
+    6%{ opacity:0.9; }
+    40%{
+      opacity:0.95;
+      transform: translateY(-18vh) rotate(80deg) scale(1.06);
+    }
+    75%{
+      transform: translateY(-42vh) rotate(160deg) scale(0.88);
+      opacity:0.7;
+    }
+    100%{
+      transform: translateY(-80vh) rotate(240deg) scale(0.7);
+      opacity:0;
+    }
+  }
+
+  /* Alt bilgi (opsiyonel) */
+  .caption {
+    position:absolute;
+    right:28px;
+    bottom:22px;
+    background:rgba(0,0,0,0.18);
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:14px;
+    color:rgba(255,255,255,0.9);
+    border:1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(4px);
+  }
+
+  /* Küçük ekran düzenlemeleri */
+  @media (max-width:860px){
+    .buket{ width:92%; max-width:640px; }
+    .buket-frame{ width:90%; }
+    .ribbon .bow{ width:140px; height:40px }
+  }
+  @media (max-width:420px){
+    .showcase{ padding:22px; border-radius:14px; }
+    .brand{ left:18px; top:14px; font-size:13px; }
+  }
+</style>
 </head>
-
 <body>
-  <canvas id="confetti-canvas"></canvas>
-  
-  <div class="birthday-message">
-    iyi ki doğdun gülüm,
-    <br>
-    öylesine doom günü kutlayam dedim at herif
-  </div>
+  <div class="showcase" role="main" aria-label="Kasımpatı Buketi vitrini">
+    <div class="brand">VARKABUKET</div>
 
-  <span class="horse-emoji" role="img" aria-label="Horse">🐎</span>
+    <div class="buket-wrap">
+      <!-- Görsel: Lütfen buradaki src'i kendi görselinizle değiştirin -->
+      <img class="buket" src="images/kasimpati-buket.jpg" alt="Pembe, beyaz, sarı ve kırmızı kasımpatı buketi" />
 
-  <script>
-    (function() {
-      const canvas = document.getElementById('confetti-canvas');
-      const ctx = canvas.getContext('2d');
+      <!-- Kağıt & kurdele efektleri -->
+      <div class="buket-frame" aria-hidden="true"></div>
+      <div class="ribbon" aria-hidden="true">
+        <div class="bow" title="Hediyelik kurdele"></div>
+        <div class="tail" ></div>
+      </div>
 
-      let W = window.innerWidth;
-      let H = window.innerHeight;
-      canvas.width = W;
-      canvas.height = H;
+      <!-- Uçuşan yaprak/parçacık efektleri -->
+      <div class="petals" aria-hidden="true">
+        <div class="petal y1"></div>
+        <div class="petal y2"></div>
+        <div class="petal y3"></div>
+        <div class="petal y4"></div>
+        <div class="petal y5"></div>
+        <div class="petal y6"></div>
+        <div class="petal y7"></div>
+        <div class="petal y8"></div>
+      </div>
+    </div>
 
-      // Konfeti miktarını artırdım
-      const maxConfettis = 300; 
-      const confettis = [];
-      const colors = [
-        "#ff0000", "#ff7f00", "#ffff00", "#00ff00", 
-        "#0000ff", "#4b0082", "#8f00ff", "#FFC0CB", "#87CEEB", "#ADFF2F" // Daha fazla renk
-      ];
-
-      function randomRange(min, max) {
-        return Math.random() * (max - min) + min;
-      }
-
-      function Confetti() {
-        this.x = Math.random() * W;
-        this.y = Math.random() * H - H;
-        this.r = randomRange(10, 25); // Boyutu biraz büyüttüm
-        this.d = Math.random() * maxConfettis;
-        this.color = colors[Math.floor(Math.random() * colors.length)];
-        this.speed = randomRange(3, 7); // Hızı artırdım
-        this.tilt = Math.random() * 10 - 5;
-        this.tiltSpeed = Math.random() * 0.1 - 0.05;
-        this.angle = Math.random() * Math.PI * 2; // Dönme açısı
-        this.rotationSpeed = randomRange(0.05, 0.15); // Dönme hızı
-      }
-
-      Confetti.prototype.update = function() {
-        this.y += this.speed;
-        this.x += Math.sin(this.y * 0.1 + this.d) * 3; // Daha belirgin yatay hareket
-        this.tilt += this.tiltSpeed;
-        this.angle += this.rotationSpeed; // Konfeti dönsün
-
-        if (this.y > H + 20) { // Biraz daha aşağıdan yeniden başlasın
-          this.x = Math.random() * W;
-          this.y = -20;
-          this.speed = randomRange(3, 7); // Hızını da yeniden randomize et
-        }
-      };
-
-      Confetti.prototype.draw = function() {
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = Math.min(1, this.y / (H * 0.7)); // Yüksekteyken daha şeffaf başlasın
-        ctx.save();
-        ctx.translate(this.x + this.r / 2, this.y + this.r / 2);
-        ctx.rotate(this.angle + this.tilt * Math.PI / 180); // Hem kendi etrafında hem de tilt ile dönsün
-        ctx.fillRect(-this.r / 2, -this.r / 2, this.r, this.r);
-        ctx.restore();
-      };
-
-      function initConfetti() {
-        for (let i = 0; i < maxConfettis; i++) {
-          confettis.push(new Confetti());
-        }
-      }
-
-      function animate() {
-        ctx.clearRect(0, 0, W, H);
-        
-        for (let i = 0; i < confettis.length; i++) {
-          confettis[i].update();
-          confettis[i].draw();
-        }
-        
-        requestAnimationFrame(animate);
-      }
-
-      window.onresize = function() {
-        W = window.innerWidth;
-        H = window.innerHeight;
-        canvas.width = W;
-        canvas.height = H;
-      };
-
-      initConfetti();
-      animate();
-    })();
-  </script>
-
+    <div class="caption">Canlı renkler: pembe • beyaz • sarı • kırmızı</div>
+  </div>
 </body>
 </html>
