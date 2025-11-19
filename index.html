@@ -1,129 +1,64 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>fedeye</title>
-<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: #04282a; /* petrol siyahı */
-    overflow: hidden;
-  }
-  canvas {
-    display: block;
-    margin: auto;
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noir Essence | Anasayfa</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
-<script>
-let flowers = [];
 
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  noStroke();
-  angleMode(DEGREES);
+    <nav class="navbar">
+        <div class="logo">NOIR<span>ESSENCE</span></div>
+        <div class="mobile-menu-icon"><i class="fa-solid fa-bars"></i></div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Koleksiyon</a></li>
+            <li><a href="hakkimizda.html">Hikayemiz</a></li>
+            <li><a href="iletisim.html">İletişim</a></li>
+        </ul>
+    </nav>
 
-  let centerX = width / 2;
-  let centerY = height / 1.7;
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Karanlığın <span class="gold-text">Zarafeti</span></h1>
+            <p>Sadece bir koku değil, görünmez bir imza.</p>
+            <a href="#products" class="btn-main">Keşfet</a>
+        </div>
+    </header>
 
-  // çiçekler
-  for (let i = 0; i < 25; i++) {
-    let offsetX = random(-150, 150);
-    let offsetY = random(-80, 80);
-    let col = random(["#f8cad9", "#ffffff", "#ffe45c", "#ff4d4d"]);
-    flowers.push(new Flower(centerX + offsetX, centerY + offsetY, col));
-  }
-}
+    <section id="products" class="container">
+        <h2 class="section-title">Özel Koleksiyon</h2>
+        <div class="product-grid">
+            <article class="product-card">
+                <div class="img-box"><img src="images/parfum1.jpg" alt="Parfüm 1"></div>
+                <div class="details">
+                    <h3>Midnight Oud</h3>
+                    <span class="price">₺2.450</span>
+                </div>
+            </article>
+            <article class="product-card">
+                <div class="img-box"><img src="images/parfum2.jpg" alt="Parfüm 2"></div>
+                <div class="details">
+                    <h3>Velvet Rose</h3>
+                    <span class="price">₺1.890</span>
+                </div>
+            </article>
+            <article class="product-card">
+                <div class="img-box"><img src="images/parfum3.jpg" alt="Parfüm 3"></div>
+                <div class="details">
+                    <h3>Deep Marine</h3>
+                    <span class="price">₺2.100</span>
+                </div>
+            </article>
+        </div>
+    </section>
 
-function draw() {
-  background(4, 40, 42, 60);
-  translate(0, 20);
+    <footer>
+        <p>&copy; 2025 Noir Essence. Tüm hakları saklıdır.</p>
+    </footer>
 
-  let centerX = width / 2;
-  let centerY = height / 1.7;
-
-  // kraft kâğıdı
-  push();
-  noStroke();
-  fill(97, 69, 44, 230); // kahverengi ton
-  beginShape();
-  vertex(centerX - 180, centerY - 40);
-  bezierVertex(centerX - 250, centerY + 180, centerX + 250, centerY + 180, centerX + 180, centerY - 40);
-  endShape(CLOSE);
-  pop();
-
-  // gövdeler
-  push();
-  stroke(44, 110, 70);
-  strokeWeight(6);
-  noFill();
-  for (let f of flowers) {
-    bezier(f.x, f.y + 20, f.x, f.y + 80, centerX, height - 150, centerX, height);
-  }
-  pop();
-
-  // çiçekler
-  for (let f of flowers) {
-    f.update();
-    f.display();
-  }
-
-  // parıltı efekti
-  fill(255, 255, 255, 8);
-  ellipse(centerX, height/2, 500, 240);
-}
-
-class Flower {
-  constructor(x, y, col) {
-    this.x = x;
-    this.y = y;
-    this.col = col;
-    this.petals = floor(random(14, 20));
-    this.size = random(20, 35);
-    this.rotation = random(360);
-    this.wave = random(1000);
-  }
-
-  update() {
-    // fare etkisi
-    let d = dist(mouseX, mouseY, this.x, this.y);
-    if (d < 150) {
-      this.rotation += sin(frameCount * 1.5 + this.wave) * 0.3;
-      this.size = lerp(this.size, 40, 0.1);
-    } else {
-      this.rotation += sin(frameCount * 0.5 + this.wave) * 0.05;
-      this.size = lerp(this.size, 30, 0.05);
-    }
-  }
-
-  display() {
-    push();
-    translate(this.x, this.y);
-    rotate(this.rotation);
-    for (let i = 0; i < this.petals; i++) {
-      let angle = (360 / this.petals) * i;
-      let r = this.size + sin(frameCount * 2 + i * 20) * 1.5;
-      let x = cos(angle) * r;
-      let y = sin(angle) * r;
-      fill(this.col);
-      ellipse(x, y, 14, 26);
-    }
-    fill(255, 220, 80);
-    ellipse(0, 0, this.size * 0.8);
-    pop();
-  }
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-}
-</script>
+    <script src="script.js"></script>
 </body>
 </html>
