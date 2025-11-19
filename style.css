@@ -41,15 +41,18 @@ body {
 .mobile-menu-icon { display: none; font-size: 1.5rem; color: var(--gold); cursor: pointer; }
 
 /* HERO & ORTAK ALANLAR */
+/* HERO & ORTAK ALANLAR */
 .hero {
     height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/hero-bg.jpg'); /* Resim yoksa siyah kalır */
+    /* İnternetten lüks, siyah dumanlı bir arka plan çekiyoruz */
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop');
     background-size: cover;
     background-position: center;
+    background-attachment: fixed; /* Parallax efekti verir, daha havalı durur */
 }
 
 .hero-content h1 { font-family: var(--font-heading); font-size: 3.5rem; margin-bottom: 1rem; }
