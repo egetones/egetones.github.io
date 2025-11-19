@@ -18,6 +18,7 @@ Bu projede herhangi bir hazır framework (Bootstrap vb.) kullanılmamış, tamam
     * CSS Variables (Değişkenler) ile renk yönetimi.
     * Responsive tasarım (@media queries).
 * **JavaScript:** Mobil cihazlar için açılır/kapanır (hamburger) menü kontrolü.
+* * **Medya Yönetimi:** Proje boyutunu düşük tutmak ve hızlı yükleme sağlamak adına görseller **Unsplash CDN** üzerinden çekilmiştir. Yerel dosya (images klasörü) kullanılmamıştır.
 
 ## 📂 Dosya Yapısı
 Proje klasörlemesi düzenli ve anlaşılır şekilde yapılandırılmıştır:
