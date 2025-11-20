@@ -25,14 +25,21 @@ Proje klasörlemesi düzenli ve anlaşılır şekilde yapılandırılmıştır:
 
 ```text
 parfum-projesi/
-├── index.html        # Ana Sayfa (Vitrin)
-├── hakkimizda.html   # Marka Hikayesi
-├── iletisim.html     # İletişim Formu
-├── style.css         # Tüm sayfaların stil dosyası
-├── script.js         # Mobil menü etkileşimleri
-├── README.md         # Proje dökümantasyonu
-└── images/           # Ürün ve arka plan görselleri
-    ├── parfum1.jpg
-    ├── parfum2.jpg
-    ├── hero-bg.jpg
-    └── ...
+│
+├── assets/                  # Proje kaynak dosyaları
+│   ├── css/
+│   │   └── style.css        # Tüm sayfaların stil dosyası
+│   ├── js/
+│   │   └── script.js        # Mobil menü ve sepet etkileşimleri
+│   └── images/              # Ürün ve arka plan görselleri
+│       ├── parfum1.jpg
+│       ├── parfum2.jpg
+│       ├── hero-bg.jpg
+│       └── ...
+│
+├── index.html               # Ana Sayfa (Vitrin)
+├── hakkimizda.html          # Marka Hikayesi
+├── iletisim.html            # İletişim Formu
+├── urun-detay.html          # Ürün Detay Sayfası (Listede var, şemada eksikti)
+├── sepet.html               # Sepet Sayfası (Listede var, şemada eksikti)
+└── README.md                # Proje dökümantasyonu
