@@ -60,7 +60,7 @@
         const params = new URLSearchParams(window.location.search);
         const productId = params.get('id');
 
-        // Ürün Veritabanımız (Basit JS objeleri)
+        // Ürün Veritabanı (Deep Marine linki DÜZELTİLDİ)
         const products = {
             'midnight': {
                 title: 'Midnight Oud',
@@ -82,13 +82,14 @@
                 title: 'Deep Marine',
                 price: '₺2.100',
                 desc: 'Okyanusun derinliklerinden gelen ferahlık. Tuzlu deniz notaları ve narenciyenin canlandırıcı etkisi.',
-                img: 'https://images.unsplash.com/photo-1519669576453-905965b92c80?auto=format&fit=crop&w=800&q=80',
+                // YENİ ÇALIŞAN GÖRSEL LİNKİ:
+                img: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80',
                 note1: 'Üst Nota: Deniz Tuzu, Limon',
                 note2: 'Alt Nota: Sedir Ağacı, Yosun'
             }
         };
 
-        // Seçilen ürünü ekrana yazdır (Varsayılan midnight)
+        // Seçilen ürünü ekrana yazdır
         const selected = products[productId] || products['midnight'];
 
         document.getElementById('p-image').src = selected.img;
@@ -98,16 +99,35 @@
         document.getElementById('p-note1').innerText = selected.note1;
         document.getElementById('p-note2').innerText = selected.note2;
 
-        // SEPET İŞLEMİ
-        let count = 0;
+        // SEPET İŞLEMİ (Local Storage ile Kalıcı Hafıza)
         const btn = document.getElementById('add-btn');
         const badge = document.getElementById('nav-cart-count');
 
+        // Sayfa açılınca mevcut sepet sayısını yaz
+        badge.innerText = localStorage.getItem("sepetSayisi") || 0;
+
         btn.addEventListener('click', () => {
-            count++;
-            badge.innerText = count;
+            // 1. Hafızadan sayıyı al
+            let currentCount = parseInt(localStorage.getItem("sepetSayisi") || 0);
+            
+            // 2. Artır
+            currentCount++;
+            
+            // 3. Kaydet
+            localStorage.setItem("sepetSayisi", currentCount);
+            
+            // 4. Ekrana yaz
+            badge.innerText = currentCount;
+
+            // Buton efekti
             btn.innerText = "Eklendi!";
-            setTimeout(() => { btn.innerText = "Sepete Ekle"; }, 1000);
+            btn.style.backgroundColor = "#fff";
+            btn.style.color = "#000";
+            setTimeout(() => { 
+                btn.innerText = "Sepete Ekle"; 
+                btn.style.backgroundColor = ""; 
+                btn.style.color = "";
+            }, 1000);
         });
     </script>
 
