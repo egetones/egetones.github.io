@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noir Essence | Sepetim</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">NOIR<span>ESSENCE</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Koleksiyon</a></li>
+            <li><a href="hakkimizda.html">Hikayemiz</a></li>
+            <li><a href="iletisim.html">İletişim</a></li>
+            <li class="cart-box">
+                <i class="fa-solid fa-bag-shopping" style="color:var(--gold)"></i>
+                <span class="cart-count">0</span>
+            </li>
+        </ul>
+        <div class="mobile-menu-icon"><i class="fa-solid fa-bars"></i></div>
+    </nav>
+
+    <section class="container">
+        <h2 class="section-title">Alışveriş Sepetiniz</h2>
+        
+        <div class="cart-container" id="cart-wrapper">
+            <p style="text-align: center; color: #aaa;">Sepetiniz şu an boş.</p>
+        </div>
+
+        <div class="cart-actions" id="cart-actions" style="display: none;">
+            <button onclick="clearCart()" class="btn-outline" style="border-color: #ff4444; color: #ff4444;">Sepeti Boşalt</button>
+            <button onclick="alert('Siparişiniz alındı! (Demo)')" class="btn-main" style="border:none; cursor:pointer;">Satın Al</button>
+        </div>
+
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Noir Essence. Tüm hakları saklıdır.</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+        // Sepet sayfasını yöneten özel kod
+        function renderCart() {
+            const cartWrapper = document.getElementById('cart-wrapper');
+            const actionButtons = document.getElementById('cart-actions');
+            
+            // Veriyi çek
+            let cart = JSON.parse(localStorage.getItem('sepet')) || [];
+
+            // Sepet boşsa
+            if (cart.length === 0) {
+                cartWrapper.innerHTML = '<p style="text-align: center; color: #aaa;">Sepetinizde henüz ürün yok.</p>';
+                actionButtons.style.display = 'none';
+                return;
+            }
+
+            // Sepet doluysa HTML oluştur
+            let html = '';
+            let totalPrice = 0;
+
+            cart.forEach((item, index) => {
+                totalPrice += item.price;
+                html += `
+                <div class="cart-item">
+                    <div style="display:flex; align-items:center;">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="item-info">
+                            <h3>${item.name}</h3>
+                            <span>${item.displayPrice}</span>
+                        </div>
+                    </div>
+                    <button class="remove-btn" onclick="removeItem(${index})"><i class="fa-solid fa-trash"></i> Sil</button>
+                </div>
+                `;
+            });
+
+            // Toplam Fiyatı Ekle
+            html += `
+                <div class="cart-total">
+                    Toplam: <span style="color:var(--gold)">₺${totalPrice.toLocaleString('tr-TR')}</span>
+                </div>
+            `;
+
+            cartWrapper.innerHTML = html;
+            actionButtons.style.display = 'flex';
+        }
+
+        // Ürün Silme Fonksiyonu
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem('sepet')) || [];
+            cart.splice(index, 1); // O sıradaki ürünü sil
+            localStorage.setItem('sepet', JSON.stringify(cart)); // Güncel hali kaydet
+            renderCart(); // Sayfayı yenile
+            updateCartCount(); // Navbar'daki sayıyı yenile
+        }
+
+        // Sepeti Tamamen Boşaltma
+        function clearCart() {
+            if(confirm("Sepeti tamamen boşaltmak istediğinize emin misiniz?")) {
+                localStorage.removeItem('sepet');
+                renderCart();
+                updateCartCount();
+            }
+        }
+
+        // Sayfa açılınca çalıştır
+        renderCart();
+    </script>
+
+</body>
+</html>
