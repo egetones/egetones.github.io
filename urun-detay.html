@@ -10,18 +10,17 @@
 </head>
 <body>
 
-   <nav class="navbar">
+    <nav class="navbar">
         <div class="logo">NOIR<span>ESSENCE</span></div>
-        
         <ul class="nav-links">
             <li><a href="index.html">Koleksiyon</a></li>
             <li><a href="hakkimizda.html">Hikayemiz</a></li>
             <li><a href="iletisim.html">İletişim</a></li>
             
             <li class="cart-box">
-                <a href="sepet.html" style="text-decoration: none; color: inherit;">
+                <a href="sepet.html" style="color: inherit; text-decoration: none;">
                     <i class="fa-solid fa-bag-shopping"></i>
-                    <span class="cart-count" style="color: #000;">0</span>
+                    <span class="cart-count" id="nav-cart-count">0</span>
                 </a>
             </li>
         </ul>
@@ -63,12 +62,12 @@
         const params = new URLSearchParams(window.location.search);
         const productId = params.get('id');
 
-        // Ürün Veritabanı (Fiyatları sayı ve yazı olarak ayırdık)
+        // Ürün Veritabanı (Tüm ürünler eksiksiz)
         const products = {
             'midnight': {
                 title: 'Midnight Oud',
-                price: 2450, // Hesaplama için sayı
-                displayPrice: '₺2.450', // Görünüm için yazı
+                price: 2450, 
+                displayPrice: '₺2.450',
                 desc: 'Gecenin gizemini teninizde hissedin. Siyah orkide, nadir baharatlar ve tütsünün büyüleyici karışımı.',
                 img: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=800&q=80',
                 note1: 'Üst Nota: Yasemin, Gardenya',
@@ -88,32 +87,36 @@
                 price: 2100,
                 displayPrice: '₺2.100',
                 desc: 'Okyanusun derinliklerinden gelen ferahlık. Tuzlu deniz notaları ve narenciyenin canlandırıcı etkisi.',
-                // ÇALIŞAN GÜNCEL LİNK:
                 img: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80',
                 note1: 'Üst Nota: Deniz Tuzu, Limon',
                 note2: 'Alt Nota: Sedir Ağacı, Yosun'
             }
         };
 
+        // Linkten gelen id yanlışsa varsayılan olarak midnight aç
         const selected = products[productId] || products['midnight'];
 
         // Bilgileri Ekrana Bas
         document.getElementById('p-image').src = selected.img;
         document.getElementById('p-title').innerText = selected.title;
-        // Ekrana yazılı fiyatı basıyoruz
-        document.getElementById('p-price').innerText = selected.displayPrice; 
+        document.getElementById('p-price').innerText = selected.displayPrice;
         document.getElementById('p-desc').innerText = selected.desc;
         document.getElementById('p-note1').innerText = selected.note1;
         document.getElementById('p-note2').innerText = selected.note2;
 
-        // SEPETE EKLEME (GÜNCELLENMİŞ SİSTEM)
+        // SEPETE EKLEME (GÜVENLİ YÖNTEM)
         const btn = document.getElementById('add-btn');
-        
+        const badge = document.getElementById('nav-cart-count');
+
+        // Sayfa açılınca mevcut sepet sayısını navbar'a yaz
+        const currentCart = JSON.parse(localStorage.getItem('sepet')) || [];
+        badge.innerText = currentCart.length;
+
         btn.addEventListener('click', () => {
-            // 1. Mevcut sepet listesini çek (Yoksa boş liste başlat)
+            // 1. Güncel sepeti çek
             let cart = JSON.parse(localStorage.getItem('sepet')) || [];
             
-            // 2. Yeni ürünü listeye ekle (Tüm detaylarıyla)
+            // 2. Yeni ürünü ekle
             cart.push({
                 name: selected.title,
                 price: selected.price,
@@ -121,11 +124,11 @@
                 image: selected.img
             });
             
-            // 3. Listeyi tekrar kaydet
+            // 3. Kaydet
             localStorage.setItem('sepet', JSON.stringify(cart));
             
-            // 4. Navbar'daki sayıyı güncelle (script.js'teki fonksiyon)
-            updateCartCount();
+            // 4. Sayacı anlık güncelle
+            badge.innerText = cart.length;
 
             // Buton Efekti
             btn.innerText = "Eklendi!";
