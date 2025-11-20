@@ -12,37 +12,39 @@
 
     <nav class="navbar">
         <div class="logo">NOIR<span>ESSENCE</span></div>
-        <div class="mobile-menu-icon"><i class="fa-solid fa-bars"></i></div>
         <ul class="nav-links">
             <li><a href="index.html">Koleksiyon</a></li>
             <li><a href="hakkimizda.html">Hikayemiz</a></li>
             <li><a href="iletisim.html">İletişim</a></li>
+            <li class="cart-box">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="cart-count" id="nav-cart-count">0</span>
+            </li>
         </ul>
+        <div class="mobile-menu-icon"><i class="fa-solid fa-bars"></i></div>
     </nav>
 
     <section class="container" style="margin-top: 2rem;">
         <div style="display: flex; flex-wrap: wrap; gap: 3rem; align-items: center;">
             
             <div style="flex: 1; min-width: 300px;">
-                <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=800&q=80" alt="Ürün Detay" style="width: 100%; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <img id="p-image" src="" alt="Ürün Detay" style="width: 100%; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             </div>
 
             <div style="flex: 1; min-width: 300px;">
-                <h1 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: #fff;">Midnight Oud</h1>
-                <p style="color: var(--gold); font-size: 1.5rem; margin: 1rem 0; font-weight: bold;">₺2.450</p>
+                <h1 id="p-title" style="font-family: 'Playfair Display', serif; font-size: 3rem; color: #fff;">...</h1>
+                <p id="p-price" style="color: var(--gold); font-size: 1.5rem; margin: 1rem 0; font-weight: bold;">...</p>
                 
-                <p style="margin-bottom: 2rem; color: #ccc;">
-                    Gecenin gizemini teninizde hissedin. Siyah orkide, nadir baharatlar ve tütsünün büyüleyici karışımı. 
-                    Kalıcılığı yüksek ve imza niteliğinde bir koku arayanlar için tasarlandı.
+                <p id="p-desc" style="margin-bottom: 2rem; color: #ccc;">
+                    ...
                 </p>
 
                 <ul style="margin-bottom: 2rem; list-style: none; color: #aaa;">
-                    <li><i class="fa-solid fa-droplet" style="color:var(--gold)"></i> <strong>Üst Nota:</strong> Yasemin, Gardenya</li>
-                    <li><i class="fa-solid fa-droplet" style="color:var(--gold)"></i> <strong>Orta Nota:</strong> Baharat Karışımı, Meyve</li>
-                    <li><i class="fa-solid fa-droplet" style="color:var(--gold)"></i> <strong>Alt Nota:</strong> Paçuli, Sandal Ağacı</li>
+                    <li><i class="fa-solid fa-droplet" style="color:var(--gold)"></i> <span id="p-note1">...</span></li>
+                    <li><i class="fa-solid fa-droplet" style="color:var(--gold)"></i> <span id="p-note2">...</span></li>
                 </ul>
 
-                <button class="btn-main" onclick="alert('Ürün sepete eklendi!');" style="cursor: pointer; border:none;">Sepete Ekle</button>
+                <button id="add-btn" class="btn-main" style="cursor: pointer; border:none;">Sepete Ekle</button>
             </div>
         </div>
     </section>
@@ -52,5 +54,62 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <script>
+        // 1. URL'den ?id=... parametresini al
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get('id');
+
+        // Ürün Veritabanımız (Basit JS objeleri)
+        const products = {
+            'midnight': {
+                title: 'Midnight Oud',
+                price: '₺2.450',
+                desc: 'Gecenin gizemini teninizde hissedin. Siyah orkide, nadir baharatlar ve tütsünün büyüleyici karışımı.',
+                img: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=800&q=80',
+                note1: 'Üst Nota: Yasemin, Gardenya',
+                note2: 'Alt Nota: Paçuli, Sandal Ağacı'
+            },
+            'rose': {
+                title: 'Velvet Rose',
+                price: '₺1.890',
+                desc: 'Isparta güllerinin kadifemsi dokunuşu. Zarif, romantik ve akılda kalıcı bir bahar esintisi.',
+                img: 'https://images.unsplash.com/photo-1585120040315-2241b774ad0f?auto=format&fit=crop&w=800&q=80',
+                note1: 'Üst Nota: Şam Gülü, Bergamot',
+                note2: 'Alt Nota: Beyaz Misk, Amber'
+            },
+            'marine': {
+                title: 'Deep Marine',
+                price: '₺2.100',
+                desc: 'Okyanusun derinliklerinden gelen ferahlık. Tuzlu deniz notaları ve narenciyenin canlandırıcı etkisi.',
+                img: 'https://images.unsplash.com/photo-1519669576453-905965b92c80?auto=format&fit=crop&w=800&q=80',
+                note1: 'Üst Nota: Deniz Tuzu, Limon',
+                note2: 'Alt Nota: Sedir Ağacı, Yosun'
+            }
+        };
+
+        // Seçilen ürünü ekrana yazdır (Varsayılan midnight)
+        const selected = products[productId] || products['midnight'];
+
+        document.getElementById('p-image').src = selected.img;
+        document.getElementById('p-title').innerText = selected.title;
+        document.getElementById('p-price').innerText = selected.price;
+        document.getElementById('p-desc').innerText = selected.desc;
+        document.getElementById('p-note1').innerText = selected.note1;
+        document.getElementById('p-note2').innerText = selected.note2;
+
+        // SEPET İŞLEMİ
+        let count = 0;
+        const btn = document.getElementById('add-btn');
+        const badge = document.getElementById('nav-cart-count');
+
+        btn.addEventListener('click', () => {
+            count++;
+            badge.innerText = count;
+            btn.innerText = "Eklendi!";
+            setTimeout(() => { btn.innerText = "Sepete Ekle"; }, 1000);
+        });
+    </script>
+
 </body>
 </html>
