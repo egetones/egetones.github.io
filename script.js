@@ -1,4 +1,4 @@
-// 1. Mobil Menü Açma/Kapama
+// 1. Mobil Menü
 const menuIcon = document.querySelector('.mobile-menu-icon');
 const navLinks = document.querySelector('.nav-links');
 
@@ -8,15 +8,17 @@ if(menuIcon){
     });
 }
 
-// 2. SEPET HAFIZASI (LocalStorage)
-// Sayfa her yüklendiğinde çalışır
-document.addEventListener("DOMContentLoaded", () => {
-    // Hafızadan sayıyı al, yoksa 0 kabul et
-    const savedCount = localStorage.getItem("sepetSayisi") || 0;
+// 2. SEPET SAYAÇ GÜNCELLEME (Global Fonksiyon)
+function updateCartCount() {
+    // LocalStorage'dan 'sepet' dizisini al, yoksa boş dizi [] kabul et
+    const cart = JSON.parse(localStorage.getItem('sepet')) || [];
     
-    // Tüm sepet ikonlarına bu sayıyı yaz (Hem mobilde hem masaüstünde varsa)
+    // Tüm rozetlere (badge) dizinin uzunluğunu yaz
     const badges = document.querySelectorAll(".cart-count");
     badges.forEach(badge => {
-        badge.innerText = savedCount;
+        badge.innerText = cart.length;
     });
-});
+}
+
+// Sayfa yüklendiğinde sayacı çalıştır
+document.addEventListener("DOMContentLoaded", updateCartCount);
