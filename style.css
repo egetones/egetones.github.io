@@ -1,18 +1,12 @@
-/* GENEL AYARLAR */
+/* --- GENEL AYARLAR (YENİ LÜKS & AYDINLIK TEMA) --- */
 :root {
-    /* Yeni Renk Paleti Tanımları */
-    --jacarta: #3A345B;          /* Ana Arka Plan */
-    --queen-pink: #F3C8DD;       /* Metinler ve Açık Detaylar */
-    --middle-purple: #D183A9;    /* Vurgular (Eski Gold yerine) */
-    --old-lavender: #71557A;     /* Kart Arka Planları */
-    --brown-chocolate: #4B1535;  /* Footer ve Koyu Vurgular */
-
-    /* Fonksiyonel Değişkenler */
-    --bg-body: var(--jacarta);
-    --bg-card: var(--old-lavender);
-    --text-main: var(--queen-pink);
-    --accent: var(--middle-purple);
-    --accent-hover: #fff;        /* Hover durumunda beyaz parlasın */
+    /* Yeni Renk Paleti: Aydınlık, Ferah ve Lüks */
+    --bg-body: #f9f9f9;          /* Çok açık gri/krem arka plan */
+    --bg-card: #ffffff;          /* Kartlar bembeyaz */
+    --text-main: #2c2c2c;        /* Ana metinler koyu gri (okunabilirlik için) */
+    --text-muted: #666666;       /* İkincil metinler */
+    --accent: #b8860b;           /* Vurgu Rengi: Altın Sarısı */
+    --dark-contrast: #1a1a1a;    /* Navbar ve Footer (Koyu Kontrast) */
     
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Roboto', sans-serif;
@@ -27,150 +21,180 @@ body {
     line-height: 1.6;
 }
 
-/* NAVBAR */
+/* --- NAVBAR --- */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 5%;
-    /* Brown Chocolate renginin %95 opak hali */
-    background-color: rgba(75, 21, 53, 0.95); 
+    background-color: var(--dark-contrast); /* Menü koyu kalsın, lüks durur */
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 1px solid rgba(209, 131, 169, 0.2); /* Middle Purple ince çizgi */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.logo { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 700; color: #fff; }
-.logo span { color: var(--accent); }
+.logo { 
+    font-family: var(--font-heading); 
+    font-size: 1.8rem; 
+    font-weight: 700; 
+    color: #fff; 
+    letter-spacing: 1px;
+}
+.logo span { color: #aaa; font-weight: 300; }
 
 .nav-links { list-style: none; display: flex; gap: 2rem; }
-.nav-links a { text-decoration: none; color: var(--text-main); transition: 0.3s; }
-.nav-links a:hover, .nav-links a.active { color: #fff; text-shadow: 0 0 5px var(--accent); }
+.nav-links a { 
+    text-decoration: none; 
+    color: #fff; /* Menü linkleri beyaz */
+    transition: 0.3s; 
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent); }
 
-.mobile-menu-icon { display: none; font-size: 1.5rem; color: var(--accent); cursor: pointer; }
+.mobile-menu-icon { display: none; font-size: 1.5rem; color: #fff; cursor: pointer; }
 
-/* HERO & ORTAK ALANLAR */
+/* --- HERO BÖLÜMÜ (AÇIK RENKLİ GÜNCELLEME) --- */
 .hero {
-    height: 80vh;
+    height: 85vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    /* Arka plan resminin üzerine Jacarta renginde bir perde çektim */
-    background: linear-gradient(rgba(58, 52, 91, 0.7), rgba(58, 52, 91, 0.7)), url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    position: relative;
+    /* Yeni Açık Renkli Görsel */
+    background: url('https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
 }
 
-.hero-content h1 { font-family: var(--font-heading); font-size: 3.5rem; margin-bottom: 1rem; color: #fff; }
-.gold-text { color: var(--accent); font-style: italic; } /* HTML'de class ismi kalsa da rengi mor yaptık */
+/* Resmin üzerine çok hafif beyaz bir perde, yazıların okunması için */
+.hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.3); /* %30 Beyazlık */
+    z-index: 1;
+}
+
+.hero-content { position: relative; z-index: 2; padding: 0 20px; }
+
+.hero-content h1 { 
+    font-family: var(--font-heading); 
+    font-size: 4rem; 
+    margin-bottom: 1rem; 
+    color: var(--dark-contrast); /* Başlık artık koyu renk */
+    line-height: 1.2;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: #444; /* Açıklama koyu gri */
+    margin-bottom: 2rem;
+}
+
+.gold-text { color: var(--accent); font-style: italic; }
 
 .btn-main {
-    display: inline-block; margin-top: 2rem; padding: 1rem 2.5rem;
-    background-color: var(--accent); color: var(--brown-chocolate); /* Buton içi koyu yazı */
+    display: inline-block; padding: 12px 35px;
+    background-color: var(--dark-contrast); /* Koyu Buton */
+    color: #fff; 
     text-decoration: none; font-weight: bold; border-radius: 50px; transition: 0.3s;
+    text-transform: uppercase; letter-spacing: 1px;
 }
-.btn-main:hover { background-color: var(--text-main); color: var(--brown-chocolate); transform: scale(1.05); }
+.btn-main:hover { 
+    background-color: var(--accent); /* Hoverda Altın Sarısı */
+    color: #fff; 
+    transform: translateY(-3px); 
+}
 
-/* ÜRÜN GRID */
-.container { padding: 5rem 5%; }
-.section-title { text-align: center; font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 3rem; color: var(--accent); }
+/* --- ÜRÜN GRID & HİZALAMA --- */
+.container { padding: 5rem 5%; max-width: 1200px; margin: 0 auto; }
+.section-title { 
+    text-align: center; 
+    font-family: var(--font-heading); 
+    font-size: 2.5rem; 
+    margin-bottom: 3rem; 
+    color: var(--dark-contrast); 
+    position: relative;
+}
+.section-title::after {
+    content: ''; display: block; width: 60px; height: 3px; 
+    background: var(--accent); margin: 10px auto 0;
+}
 
 .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+
 .product-card {
     background-color: var(--bg-card); 
-    border: 1px solid rgba(209, 131, 169, 0.1); /* Hafif mor çerçeve */
     border-radius: 10px; overflow: hidden; transition: 0.3s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Hafif gölge */
+    text-align: center;
 }
-.product-card:hover { transform: translateY(-10px); border-color: var(--accent); }
-.img-box { height: 300px; overflow: hidden; background: #000; }
-.img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-.product-card:hover .img-box img { transform: scale(1.1); } /* Resme zoom efekti ekledim */
+.product-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
 
-.details { padding: 1.5rem; text-align: center; }
-.details h3 { color: #fff; margin-bottom: 0.5rem; }
-.price { display: block; font-size: 1.2rem; color: var(--queen-pink); font-weight: bold; margin: 1rem 0; }
-
-/* HAKKIMIZDA VE İLETİŞİM FORMU */
-.page-content { padding: 4rem 10%; text-align: center; }
-.text-block { font-size: 1.1rem; max-width: 800px; margin: 0 auto; color: var(--queen-pink); opacity: 0.9; }
-
-.contact-form { max-width: 600px; margin: 2rem auto; text-align: left; }
-.form-group { margin-bottom: 1.5rem; }
-.form-group label { display: block; margin-bottom: 0.5rem; color: var(--accent); }
-.form-group input, .form-group textarea {
-    width: 100%; padding: 1rem; 
-    background: rgba(58, 52, 91, 0.5); /* Jacarta'nın şeffaf hali */
-    border: 1px solid var(--old-lavender); 
-    color: #fff; border-radius: 5px;
+/* --- KRİTİK HİZALAMA DÜZELTMESİ --- */
+.img-box { 
+    width: 100%;
+    height: 350px; /* Sabit yükseklik */
+    overflow: hidden; 
 }
-.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); background-color: var(--jacarta); }
-
-/* FOOTER */
-footer { 
-    background-color: var(--brown-chocolate); 
-    padding: 2rem; text-align: center; 
-    border-top: 1px solid var(--old-lavender); 
-    margin-top: auto; 
-    color: var(--queen-pink);
+.img-box img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* Resmi esnetmeden kutuya sığdırır */
+    transition: 0.5s; 
 }
+.product-card:hover .img-box img { transform: scale(1.05); } 
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .nav-links { 
-        display: none; flex-direction: column; position: absolute; 
-        top: 70px; right: 0; 
-        background: var(--brown-chocolate); /* Mobilde menü arka planı */
-        width: 100%; text-align: center; padding: 2rem; border-bottom: 2px solid var(--accent);
-    }
-    .nav-links.active { display: flex; }
-    .mobile-menu-icon { display: block; }
-    .hero-content h1 { font-size: 2.5rem; }
+.details { padding: 1.5rem; }
+.details h3 { 
+    color: var(--dark-contrast); /* Ürün ismi koyu */
+    margin-bottom: 0.5rem; 
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
 }
+.price { display: block; font-size: 1.2rem; color: var(--accent); font-weight: bold; margin: 0.5rem 0; }
 
-/* SEPET İKONU */
-.cart-box {
-    position: relative;
-    cursor: pointer;
-    margin-left: 20px;
-    color: var(--queen-pink);
-    font-size: 1.2rem;
-}
-
-.cart-box:hover { color: #fff; }
-
+/* --- SEPET İKONU --- */
+.cart-box { position: relative; cursor: pointer; margin-left: 20px; color: #fff; font-size: 1.2rem; }
+.cart-box:hover { color: var(--accent); }
 .cart-count {
-    position: absolute;
-    top: -8px; right: -8px;
-    background-color: var(--accent);
-    color: var(--brown-chocolate);
+    position: absolute; top: -8px; right: -8px;
+    background-color: var(--accent); color: #fff;
     font-size: 0.7rem; font-weight: bold;
     width: 18px; height: 18px;
     display: flex; align-items: center; justify-content: center;
     border-radius: 50%;
 }
 
-/* SEPET SAYFASI */
+/* --- SAYFA İÇERİKLERİ & FORMLAR --- */
+.page-content { padding: 4rem 10%; text-align: center; }
+.text-block { font-size: 1.1rem; max-width: 800px; margin: 0 auto; color: var(--text-muted); }
+
+.contact-form { max-width: 600px; margin: 2rem auto; text-align: left; }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; color: var(--dark-contrast); font-weight: bold; }
+
+.form-group input, .form-group textarea {
+    width: 100%; padding: 1rem; 
+    background: #fff; /* Form içi beyaz */
+    border: 1px solid #ddd; /* İnce gri çizgi */
+    color: var(--text-main); border-radius: 5px;
+}
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 5px rgba(184, 134, 11, 0.2); }
+
+/* --- SEPET SAYFASI (AÇIK TEMA) --- */
 .cart-container {
     max-width: 800px; margin: 2rem auto;
-    background-color: var(--bg-card);
+    background-color: #fff;
     padding: 2rem; border-radius: 10px;
-    border: 1px solid var(--old-lavender);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
 }
-
 .cart-item {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 1rem 0; border-bottom: 1px solid #eee;
 }
-
-.cart-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 5px; }
-
-.item-info { flex: 1; margin-left: 1rem; }
-.item-info h3 { font-size: 1.1rem; color: #fff; }
-.item-info span { color: var(--queen-pink); font-size: 0.9rem; }
+.item-info h3 { font-size: 1.1rem; color: var(--dark-contrast); }
+.item-info span { color: var(--text-muted); font-size: 0.9rem; }
 
 .remove-btn {
     background: transparent; border: 1px solid #ff4444; color: #ff4444;
@@ -180,17 +204,35 @@ footer {
 
 .cart-total {
     margin-top: 2rem; text-align: right; font-size: 1.5rem;
-    color: #fff; border-top: 2px solid var(--accent); padding-top: 1rem;
+    color: var(--dark-contrast); border-top: 2px solid var(--accent); padding-top: 1rem;
 }
 
 .cart-actions { margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem; }
-
 .btn-outline {
-    border: 1px solid var(--queen-pink); color: var(--queen-pink);
+    border: 1px solid var(--dark-contrast); color: var(--dark-contrast);
     background: transparent; padding: 0.8rem 2rem;
     text-decoration: none; border-radius: 50px; transition: 0.3s; cursor: pointer;
 }
+.btn-outline:hover { background-color: var(--dark-contrast); color: #fff; }
 
-.btn-outline:hover {
-    border-color: var(--accent); background-color: var(--accent); color: var(--brown-chocolate);
+/* --- FOOTER --- */
+footer { 
+    background-color: var(--dark-contrast); 
+    padding: 2rem; text-align: center; 
+    margin-top: auto; 
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .nav-links { 
+        display: none; flex-direction: column; position: absolute; 
+        top: 70px; right: 0; 
+        background: var(--dark-contrast);
+        width: 100%; text-align: center; padding: 2rem; border-bottom: 2px solid var(--accent);
+    }
+    .nav-links.active { display: flex; }
+    .mobile-menu-icon { display: block; }
+    .hero-content h1 { font-size: 2.5rem; }
 }
