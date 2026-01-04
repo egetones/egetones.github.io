@@ -1,10 +1,19 @@
 /* GENEL AYARLAR */
 :root {
-    --bg-dark: #0b1013;
-    --bg-card: #151b1f;
-    --text-main: #e0e0e0;
-    --gold: #c5a059;
-    --gold-hover: #d4af37;
+    /* Yeni Renk Paleti Tanımları */
+    --jacarta: #3A345B;          /* Ana Arka Plan */
+    --queen-pink: #F3C8DD;       /* Metinler ve Açık Detaylar */
+    --middle-purple: #D183A9;    /* Vurgular (Eski Gold yerine) */
+    --old-lavender: #71557A;     /* Kart Arka Planları */
+    --brown-chocolate: #4B1535;  /* Footer ve Koyu Vurgular */
+
+    /* Fonksiyonel Değişkenler */
+    --bg-body: var(--jacarta);
+    --bg-card: var(--old-lavender);
+    --text-main: var(--queen-pink);
+    --accent: var(--middle-purple);
+    --accent-hover: #fff;        /* Hover durumunda beyaz parlasın */
+    
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Roboto', sans-serif;
 }
@@ -13,7 +22,7 @@
 
 body {
     font-family: var(--font-body);
-    background-color: var(--bg-dark);
+    background-color: var(--bg-body);
     color: var(--text-main);
     line-height: 1.6;
 }
@@ -24,23 +33,23 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 5%;
-    background-color: rgba(11, 16, 19, 0.95);
+    /* Brown Chocolate renginin %95 opak hali */
+    background-color: rgba(75, 21, 53, 0.95); 
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+    border-bottom: 1px solid rgba(209, 131, 169, 0.2); /* Middle Purple ince çizgi */
 }
 
 .logo { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 700; color: #fff; }
-.logo span { color: var(--gold); }
+.logo span { color: var(--accent); }
 
 .nav-links { list-style: none; display: flex; gap: 2rem; }
 .nav-links a { text-decoration: none; color: var(--text-main); transition: 0.3s; }
-.nav-links a:hover, .nav-links a.active { color: var(--gold); }
+.nav-links a:hover, .nav-links a.active { color: #fff; text-shadow: 0 0 5px var(--accent); }
 
-.mobile-menu-icon { display: none; font-size: 1.5rem; color: var(--gold); cursor: pointer; }
+.mobile-menu-icon { display: none; font-size: 1.5rem; color: var(--accent); cursor: pointer; }
 
-/* HERO & ORTAK ALANLAR */
 /* HERO & ORTAK ALANLAR */
 .hero {
     height: 80vh;
@@ -48,175 +57,140 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    /* İnternetten lüks, siyah dumanlı bir arka plan çekiyoruz */
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop');
+    /* Arka plan resminin üzerine Jacarta renginde bir perde çektim */
+    background: linear-gradient(rgba(58, 52, 91, 0.7), rgba(58, 52, 91, 0.7)), url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* Parallax efekti verir, daha havalı durur */
+    background-attachment: fixed;
 }
 
-.hero-content h1 { font-family: var(--font-heading); font-size: 3.5rem; margin-bottom: 1rem; }
-.gold-text { color: var(--gold); font-style: italic; }
+.hero-content h1 { font-family: var(--font-heading); font-size: 3.5rem; margin-bottom: 1rem; color: #fff; }
+.gold-text { color: var(--accent); font-style: italic; } /* HTML'de class ismi kalsa da rengi mor yaptık */
 
 .btn-main {
     display: inline-block; margin-top: 2rem; padding: 1rem 2.5rem;
-    background-color: var(--gold); color: var(--bg-dark);
+    background-color: var(--accent); color: var(--brown-chocolate); /* Buton içi koyu yazı */
     text-decoration: none; font-weight: bold; border-radius: 50px; transition: 0.3s;
 }
-.btn-main:hover { background-color: var(--gold-hover); transform: scale(1.05); }
+.btn-main:hover { background-color: var(--text-main); color: var(--brown-chocolate); transform: scale(1.05); }
 
 /* ÜRÜN GRID */
 .container { padding: 5rem 5%; }
-.section-title { text-align: center; font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 3rem; color: var(--gold); }
+.section-title { text-align: center; font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 3rem; color: var(--accent); }
 
 .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
 .product-card {
-    background-color: var(--bg-card); border: 1px solid rgba(255,255,255,0.05);
+    background-color: var(--bg-card); 
+    border: 1px solid rgba(209, 131, 169, 0.1); /* Hafif mor çerçeve */
     border-radius: 10px; overflow: hidden; transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
-.product-card:hover { transform: translateY(-10px); border-color: var(--gold); }
-.img-box { height: 300px; overflow: hidden; background: #000; } /* Resim yoksa siyah */
-.img-box img { width: 100%; height: 100%; object-fit: cover; }
-.details { padding: 1.5rem; text-align: center; }
-.price { display: block; font-size: 1.2rem; color: var(--gold); margin: 1rem 0; }
+.product-card:hover { transform: translateY(-10px); border-color: var(--accent); }
+.img-box { height: 300px; overflow: hidden; background: #000; }
+.img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+.product-card:hover .img-box img { transform: scale(1.1); } /* Resme zoom efekti ekledim */
 
-/* HAKKIMIZDA VE İLETİŞİM SAYFASI İÇİN FORM */
+.details { padding: 1.5rem; text-align: center; }
+.details h3 { color: #fff; margin-bottom: 0.5rem; }
+.price { display: block; font-size: 1.2rem; color: var(--queen-pink); font-weight: bold; margin: 1rem 0; }
+
+/* HAKKIMIZDA VE İLETİŞİM FORMU */
 .page-content { padding: 4rem 10%; text-align: center; }
-.text-block { font-size: 1.1rem; max-width: 800px; margin: 0 auto; color: #ccc; }
+.text-block { font-size: 1.1rem; max-width: 800px; margin: 0 auto; color: var(--queen-pink); opacity: 0.9; }
 
 .contact-form { max-width: 600px; margin: 2rem auto; text-align: left; }
 .form-group { margin-bottom: 1.5rem; }
-.form-group label { display: block; margin-bottom: 0.5rem; color: var(--gold); }
+.form-group label { display: block; margin-bottom: 0.5rem; color: var(--accent); }
 .form-group input, .form-group textarea {
-    width: 100%; padding: 1rem; background: var(--bg-card);
-    border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 5px;
+    width: 100%; padding: 1rem; 
+    background: rgba(58, 52, 91, 0.5); /* Jacarta'nın şeffaf hali */
+    border: 1px solid var(--old-lavender); 
+    color: #fff; border-radius: 5px;
 }
-.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); background-color: var(--jacarta); }
 
 /* FOOTER */
-footer { background-color: #000; padding: 2rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: auto; }
+footer { 
+    background-color: var(--brown-chocolate); 
+    padding: 2rem; text-align: center; 
+    border-top: 1px solid var(--old-lavender); 
+    margin-top: auto; 
+    color: var(--queen-pink);
+}
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-    .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; right: 0; background: #000; width: 100%; text-align: center; padding: 2rem; }
+    .nav-links { 
+        display: none; flex-direction: column; position: absolute; 
+        top: 70px; right: 0; 
+        background: var(--brown-chocolate); /* Mobilde menü arka planı */
+        width: 100%; text-align: center; padding: 2rem; border-bottom: 2px solid var(--accent);
+    }
     .nav-links.active { display: flex; }
     .mobile-menu-icon { display: block; }
     .hero-content h1 { font-size: 2.5rem; }
 }
 
-/* SEPET İKONU AYARLARI */
+/* SEPET İKONU */
 .cart-box {
     position: relative;
     cursor: pointer;
     margin-left: 20px;
-    color: #fff;
+    color: var(--queen-pink);
     font-size: 1.2rem;
 }
 
-.cart-box:hover {
-    color: var(--gold);
-}
+.cart-box:hover { color: #fff; }
 
 .cart-count {
     position: absolute;
-    top: -8px;
-    right: -8px;
-    background-color: var(--gold);
-    color: var(--bg-dark);
-    font-size: 0.7rem;
-    font-weight: bold;
-    width: 18px;
-    height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    top: -8px; right: -8px;
+    background-color: var(--accent);
+    color: var(--brown-chocolate);
+    font-size: 0.7rem; font-weight: bold;
+    width: 18px; height: 18px;
+    display: flex; align-items: center; justify-content: center;
     border-radius: 50%;
 }
 
-/* SEPET SAYFASI TASARIMI */
+/* SEPET SAYFASI */
 .cart-container {
-    max-width: 800px;
-    margin: 2rem auto;
+    max-width: 800px; margin: 2rem auto;
     background-color: var(--bg-card);
-    padding: 2rem;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.05);
+    padding: 2rem; border-radius: 10px;
+    border: 1px solid var(--old-lavender);
 }
 
 .cart-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.cart-item img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 5px;
-}
+.cart-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 5px; }
 
-.item-info {
-    flex: 1;
-    margin-left: 1rem;
-}
-
-.item-info h3 {
-    font-size: 1.1rem;
-    color: #fff;
-}
-
-.item-info span {
-    color: var(--gold);
-    font-size: 0.9rem;
-}
+.item-info { flex: 1; margin-left: 1rem; }
+.item-info h3 { font-size: 1.1rem; color: #fff; }
+.item-info span { color: var(--queen-pink); font-size: 0.9rem; }
 
 .remove-btn {
-    background: transparent;
-    border: 1px solid #ff4444;
-    color: #ff4444;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: 0.3s;
+    background: transparent; border: 1px solid #ff4444; color: #ff4444;
+    padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; transition: 0.3s;
 }
-
-.remove-btn:hover {
-    background: #ff4444;
-    color: #fff;
-}
+.remove-btn:hover { background: #ff4444; color: #fff; }
 
 .cart-total {
-    margin-top: 2rem;
-    text-align: right;
-    font-size: 1.5rem;
-    color: #fff;
-    border-top: 2px solid var(--gold);
-    padding-top: 1rem;
+    margin-top: 2rem; text-align: right; font-size: 1.5rem;
+    color: #fff; border-top: 2px solid var(--accent); padding-top: 1rem;
 }
 
-.cart-actions {
-    margin-top: 2rem;
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-}
+.cart-actions { margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem; }
 
 .btn-outline {
-    border: 1px solid #fff;
-    color: #fff;
-    background: transparent;
-    padding: 0.8rem 2rem;
-    text-decoration: none;
-    border-radius: 50px;
-    transition: 0.3s;
-    cursor: pointer;
+    border: 1px solid var(--queen-pink); color: var(--queen-pink);
+    background: transparent; padding: 0.8rem 2rem;
+    text-decoration: none; border-radius: 50px; transition: 0.3s; cursor: pointer;
 }
 
 .btn-outline:hover {
-    border-color: var(--gold);
-    color: var(--gold);
+    border-color: var(--accent); background-color: var(--accent); color: var(--brown-chocolate);
 }
