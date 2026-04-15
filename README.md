@@ -43,3 +43,4 @@ parfum-projesi/
 ├── urun-detay.html          # Ürün Detay Sayfası (Listede var, şemada eksikti)
 ├── sepet.html               # Sepet Sayfası (Listede var, şemada eksikti)
 └── README.md                # Proje dökümantasyonu
+Çrş 15 Nis 2026 22:16:40 +03
