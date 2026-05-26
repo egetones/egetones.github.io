@@ -1,92 +1,917 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noir Essence | Anasayfa</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pamukkale Yolculuğu 🚌</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a0a2e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Nunito', sans-serif;
+    overflow: hidden;
+  }
+
+  #gameWrapper {
+    position: relative;
+    width: 800px;
+    height: 520px;
+  }
+
+  canvas {
+    display: block;
+    border-radius: 18px;
+    box-shadow: 0 0 60px rgba(220,50,50,0.4), 0 0 120px rgba(220,50,50,0.15);
+    border: 3px solid rgba(220,50,50,0.5);
+  }
+
+  #ui {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .ui-box {
+    background: rgba(0,0,0,0.55);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 6px 14px;
+    color: #fff;
+    font-family: 'Baloo 2', cursive;
+    font-size: 15px;
+    font-weight: 600;
+    backdrop-filter: blur(6px);
+  }
+
+  .ui-box span { color: #ff6b6b; font-weight: 800; }
+
+  #overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15,5,30,0.92);
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    text-align: center;
+    padding: 40px;
+  }
+
+  #overlay h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 30px rgba(220,50,50,0.8);
+    margin-bottom: 8px;
+  }
+
+  #overlay .sub {
+    font-size: 16px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+
+  #overlay .route-info {
+    background: rgba(220,50,50,0.15);
+    border: 1px solid rgba(220,50,50,0.4);
+    border-radius: 12px;
+    padding: 12px 20px;
+    color: rgba(255,255,255,0.85);
+    font-size: 13px;
+    margin-bottom: 28px;
+    line-height: 1.8;
+  }
+
+  .btn {
+    background: linear-gradient(135deg, #dc3232, #a01010);
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    font-family: 'Baloo 2', cursive;
+    font-size: 20px;
+    font-weight: 800;
+    padding: 14px 48px;
+    cursor: pointer;
+    pointer-events: all;
+    box-shadow: 0 4px 20px rgba(220,50,50,0.5);
+    transition: transform 0.1s, box-shadow 0.1s;
+    letter-spacing: 1px;
+  }
+  .btn:hover { transform: scale(1.05); box-shadow: 0 6px 28px rgba(220,50,50,0.7); }
+  .btn:active { transform: scale(0.97); }
+
+  #controls-hint {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.4);
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  #stopBanner {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: linear-gradient(135deg, #dc3232, #a01010);
+    border-radius: 50px;
+    padding: 8px 28px;
+    color: #fff;
+    font-family: 'Baloo 2', cursive;
+    font-size: 18px;
+    font-weight: 800;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  #stopBanner.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  #itemPopup {
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.5);
+    background: rgba(0,0,0,0.8);
+    border: 2px solid rgba(255,220,0,0.6);
+    border-radius: 12px;
+    padding: 6px 18px;
+    color: #ffd700;
+    font-family: 'Baloo 2', cursive;
+    font-size: 16px;
+    font-weight: 700;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  #itemPopup.show {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+</style>
 </head>
 <body>
 
-  <nav class="navbar">
-        <div class="logo">NOIR<span>ESSENCE</span></div>
-        
-        <ul class="nav-links">
-            <li><a href="index.html">Koleksiyon</a></li>
-            <li><a href="hakkimizda.html">Hikayemiz</a></li>
-            <li><a href="iletisim.html">İletişim</a></li>
-            
-            <li class="cart-box">
-                <a href="sepet.html" style="text-decoration: none; color: inherit;">
-                    <i class="fa-solid fa-bag-shopping"></i>
-                    <span class="cart-count" style="color: #000;">0</span>
-                </a>
-            </li>
-        </ul>
-        <div class="mobile-menu-icon"><i class="fa-solid fa-bars"></i></div>
-    </nav>
+<div id="gameWrapper">
+  <canvas id="gameCanvas" width="800" height="520"></canvas>
 
-    <header class="hero">
-        <div class="hero-content">
-            <h1>Karanlığın <span class="gold-text">Zarafeti</span></h1>
-            <p>Sadece bir koku değil, görünmez bir imza.</p>
-            <a href="#products" class="btn-main">Keşfet</a>
-        </div>
-    </header>
+  <div id="ui">
+    <div class="ui-box">⭐ Puan: <span id="scoreDisplay">0</span></div>
+    <div class="ui-box" id="stopDisplay">🚌 Denizli'den başlıyor...</div>
+    <div class="ui-box">⏱️ <span id="timerDisplay">5:00</span></div>
+  </div>
 
-    <section id="products" class="container">
-        <h2 class="section-title">Özel Koleksiyon</h2>
-        
-        <div class="product-grid">
-            
-            <article class="product-card">
-                <a href="urun-detay.html?id=midnight" style="text-decoration: none; color: inherit;">
-                    <div class="img-box">
-                        <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=600&q=80" alt="Midnight Oud">
-                    </div>
-                    <div class="details">
-                        <h3>Midnight Oud</h3>
-                        <span class="price">₺2.450</span>
-                        <p style="font-size: 0.9rem; margin-top: 0.5rem; color: #aaa;">Detayları Gör <i class="fa-solid fa-arrow-right"></i></p>
-                    </div>
-                </a>
-            </article>
+  <div id="stopBanner">📍 Durak: Denizli</div>
+  <div id="itemPopup">+10 Pembe Kalem! ✒️</div>
+  <div id="controls-hint">← → hareket | BOŞLUK / ↑ hızlan | ↓ fren</div>
 
-            <article class="product-card">
-                <a href="urun-detay.html?id=rose" style="text-decoration: none; color: inherit;">
-                    <div class="img-box">
-                        <img src="https://images.unsplash.com/photo-1585120040315-2241b774ad0f?auto=format&fit=crop&w=600&q=80" alt="Velvet Rose">
-                    </div>
-                    <div class="details">
-                        <h3>Velvet Rose</h3>
-                        <span class="price">₺1.890</span>
-                        <p style="font-size: 0.9rem; margin-top: 0.5rem; color: #aaa;">Detayları Gör <i class="fa-solid fa-arrow-right"></i></p>
-                    </div>
-                </a>
-            </article>
+  <div id="overlay">
+    <h1>🚌 Pamukkale Yolculuğu</h1>
+    <p class="sub">Denizli'den Ankara'ya, anılarla dolu bir yolculuk...</p>
+    <div class="route-info">
+      📍 Denizli → Dazkırı → Kaptan Mola → Dinar → Sandıklı → Afyon → Polatlı → 🏁 Ankara
+    </div>
+    <button class="btn" id="startBtn">YOLA ÇIK! 🚌</button>
+  </div>
+</div>
 
-            <article class="product-card">
-                <a href="urun-detay.html?id=marine" style="text-decoration: none; color: inherit;">
-                    <div class="img-box">
-                        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=600&q=80" alt="Deep Marine">
-                    </div>
-                    <div class="details">
-                        <h3>Deep Marine</h3>
-                        <span class="price">₺2.100</span>
-                        <p style="font-size: 0.9rem; margin-top: 0.5rem; color: #aaa;">Detayları Gör <i class="fa-solid fa-arrow-right"></i></p>
-                    </div>
-                </a>
-            </article>
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
 
-        </div>
-    </section>
+// ─── STOPS ───
+const STOPS = [
+  { name: 'Denizli', x: 0 },
+  { name: 'Dazkırı', x: 1500 },
+  { name: 'Kaptan Mola', x: 3200 },
+  { name: 'Dinar', x: 5000 },
+  { name: 'Sandıklı', x: 6800 },
+  { name: 'Afyon', x: 8800 },
+  { name: 'Polatlı', x: 11000 },
+  { name: 'Ankara', x: 13500 },
+];
+const WORLD_END = 14000;
 
-    <footer>
-        <p>&copy; 2026 Noir Essence. Tüm hakları saklıdır.</p>
-    </footer>
+// ─── ITEMS ───
+const ITEM_TYPES = [
+  { emoji: '✒️', label: 'Pembe Dolma Kalem', color: '#ff69b4', pts: 10 },
+  { emoji: '🖱️', label: 'Pembe Mouse', color: '#ff8fc8', pts: 10 },
+  { emoji: '📕', label: 'Kırmızı Kitap', color: '#e74c3c', pts: 15 },
+  { emoji: '📒', label: 'Sarı Kitap', color: '#f1c40f', pts: 15 },
+  { emoji: '⭐', label: 'Yıldızlı Küpe', color: '#ffd700', pts: 20 },
+  { emoji: '🐱', label: 'Ankara Magnet', color: '#fff', pts: 25 },
+  { emoji: '🦈', label: 'Mavi Peluş', color: '#5bc8f5', pts: 20 },
+  { emoji: '🍕', label: 'Pizza', color: '#f39c12', pts: 10 },
+  { emoji: '🍝', label: 'Fettuccine Alfredo', color: '#f5cba7', pts: 10 },
+  { emoji: '✈️', label: 'Maket Uçak', color: '#85c1e9', pts: 15 },
+  { emoji: '🌯', label: 'Tavuk Döner', color: '#e67e22', pts: 10 },
+  { emoji: '👕', label: 'Kahverengi T-Shirt', color: '#8b5a2b', pts: 10 },
+  { emoji: '💧', label: 'Erikli Su', color: '#3498db', pts: 5 },
+];
 
-    <script src="script.js"></script>
+// ─── GAME STATE ───
+let state = 'menu'; // menu | playing | stopped | end
+let score = 0;
+let busX = 0; // world x
+let busLane = H / 2; // screen Y
+let busSpeed = 0;
+let busTargetLane = H / 2;
+let cameraX = 0;
+let timeLeft = 300; // 5 minutes
+let lastTime = 0;
+let stopTimer = 0;
+let currentStopIdx = 0;
+let nextStopIdx = 1;
+let atStop = false;
+let items = [];
+let particles = [];
+let bgObjects = [];
+let roadCurve = []; // array of {x, offset} for road waviness
+let clouds = [];
+let busAnim = 0; // wheel rotation
+let engineShake = 0;
+
+// ─── GENERATE WORLD ───
+function generateWorld() {
+  items = [];
+  bgObjects = [];
+  roadCurve = [];
+  clouds = [];
+
+  // Road curve waypoints
+  for (let x = 0; x <= WORLD_END + 800; x += 200) {
+    roadCurve.push({ x, offset: Math.sin(x * 0.0008) * 60 });
+  }
+
+  // Scatter items (avoid stop zones)
+  let itemSpacing = WORLD_END / 90;
+  for (let i = 0; i < 90; i++) {
+    let wx = 300 + i * itemSpacing + (Math.random() - 0.5) * itemSpacing * 0.8;
+    // skip if near a stop
+    let nearStop = STOPS.some(s => Math.abs(s.x - wx) < 300);
+    if (nearStop) continue;
+    let lane = H / 2 + (Math.random() < 0.5 ? -1 : 1) * (30 + Math.random() * 50);
+    let type = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
+    items.push({ wx, lane, type, collected: false, bobOffset: Math.random() * Math.PI * 2 });
+  }
+
+  // BG objects
+  for (let i = 0; i < 300; i++) {
+    let wx = Math.random() * WORLD_END;
+    let side = Math.random() < 0.5 ? -1 : 1;
+    let y = H / 2 + side * (120 + Math.random() * 100);
+    let type = Math.random();
+    bgObjects.push({ wx, y, type, scale: 0.7 + Math.random() * 0.7 });
+  }
+
+  // Clouds
+  for (let i = 0; i < 60; i++) {
+    clouds.push({
+      wx: Math.random() * WORLD_END,
+      y: 30 + Math.random() * 80,
+      scale: 0.5 + Math.random() * 1,
+      speed: 0.1 + Math.random() * 0.15
+    });
+  }
+}
+
+function getRoadOffset(wx) {
+  let i = 0;
+  while (i < roadCurve.length - 1 && roadCurve[i + 1].x < wx) i++;
+  let a = roadCurve[i], b = roadCurve[i + 1] || a;
+  let t = b.x === a.x ? 0 : (wx - a.x) / (b.x - a.x);
+  return a.offset + (b.offset - a.offset) * t;
+}
+
+// ─── INPUT ───
+const keys = {};
+window.addEventListener('keydown', e => { keys[e.code] = true; e.preventDefault(); });
+window.addEventListener('keyup', e => { keys[e.code] = false; });
+
+// ─── STOP BANNER ───
+const stopBanner = document.getElementById('stopBanner');
+const itemPopup = document.getElementById('itemPopup');
+const scoreDisplay = document.getElementById('scoreDisplay');
+const stopDisplay = document.getElementById('stopDisplay');
+const timerDisplay = document.getElementById('timerDisplay');
+
+function showStopBanner(name) {
+  stopBanner.textContent = '📍 Durak: ' + name;
+  stopBanner.classList.add('show');
+  setTimeout(() => stopBanner.classList.remove('show'), 2500);
+}
+
+function showItemPopup(label, pts) {
+  itemPopup.textContent = '+' + pts + ' ' + label + '!';
+  itemPopup.classList.add('show');
+  clearTimeout(itemPopup._t);
+  itemPopup._t = setTimeout(() => itemPopup.classList.remove('show'), 1000);
+}
+
+// ─── PARTICLES ───
+function spawnParticles(sx, sy, color) {
+  for (let i = 0; i < 8; i++) {
+    let angle = Math.random() * Math.PI * 2;
+    let speed = 2 + Math.random() * 3;
+    particles.push({
+      x: sx, y: sy,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      color,
+      life: 1,
+      size: 4 + Math.random() * 4
+    });
+  }
+}
+
+// ─── DRAW FUNCTIONS ───
+
+function drawSky() {
+  let grad = ctx.createLinearGradient(0, 0, 0, H * 0.55);
+  let progress = busX / WORLD_END;
+  // shift from warm sunset to blue afternoon
+  let r1 = Math.round(135 + progress * 30);
+  let g1 = Math.round(180 + progress * 40);
+  let b1 = Math.round(220);
+  grad.addColorStop(0, `rgb(${r1},${g1},${b1})`);
+  grad.addColorStop(1, `rgb(200,230,255)`);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H * 0.55);
+}
+
+function drawGround() {
+  let grad = ctx.createLinearGradient(0, H * 0.5, 0, H);
+  grad.addColorStop(0, '#7ec850');
+  grad.addColorStop(0.4, '#6ab040');
+  grad.addColorStop(1, '#4a8020');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, H * 0.5, W, H * 0.5);
+}
+
+function drawClouds(dt) {
+  clouds.forEach(c => {
+    c.wx -= c.speed * dt * 30; // very slow drift
+    if (c.wx < -200) c.wx = WORLD_END + 200;
+    let sx = c.wx - cameraX;
+    if (sx < -200 || sx > W + 200) return;
+    ctx.save();
+    ctx.globalAlpha = 0.82;
+    ctx.fillStyle = '#fff';
+    let cx = sx, cy = c.y;
+    let r = 28 * c.scale;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.arc(cx + r * 0.8, cy - r * 0.3, r * 0.75, 0, Math.PI * 2);
+    ctx.arc(cx + r * 1.6, cy, r * 0.85, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+}
+
+function drawRoad() {
+  // Draw wide road following curve
+  ctx.save();
+  const ROAD_W = 180;
+
+  // Road base
+  ctx.beginPath();
+  let started = false;
+  for (let wx = cameraX - 20; wx <= cameraX + W + 20; wx += 8) {
+    let sx = wx - cameraX;
+    let cy = H / 2 + getRoadOffset(wx);
+    if (!started) { ctx.moveTo(sx, cy - ROAD_W / 2); started = true; }
+    else ctx.lineTo(sx, cy - ROAD_W / 2);
+  }
+  for (let wx = cameraX + W + 20; wx >= cameraX - 20; wx -= 8) {
+    let sx = wx - cameraX;
+    let cy = H / 2 + getRoadOffset(wx);
+    ctx.lineTo(sx, cy + ROAD_W / 2);
+  }
+  ctx.closePath();
+  ctx.fillStyle = '#555';
+  ctx.fill();
+
+  // Road shoulders (white)
+  [-1, 1].forEach(side => {
+    ctx.beginPath();
+    let s2 = false;
+    for (let wx = cameraX - 20; wx <= cameraX + W + 20; wx += 8) {
+      let sx = wx - cameraX;
+      let cy = H / 2 + getRoadOffset(wx) + side * (ROAD_W / 2 - 6);
+      if (!s2) { ctx.moveTo(sx, cy - 3); s2 = true; }
+      else ctx.lineTo(sx, cy - 3);
+    }
+    for (let wx = cameraX + W + 20; wx >= cameraX - 20; wx -= 8) {
+      let sx = wx - cameraX;
+      let cy = H / 2 + getRoadOffset(wx) + side * (ROAD_W / 2 - 6);
+      ctx.lineTo(sx, cy + 3);
+    }
+    ctx.closePath();
+    ctx.fillStyle = '#eee';
+    ctx.fill();
+  });
+
+  // Center dashes
+  ctx.setLineDash([30, 20]);
+  ctx.strokeStyle = '#ffe082';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  let fd = false;
+  for (let wx = cameraX - 20; wx <= cameraX + W + 20; wx += 6) {
+    let sx = wx - cameraX;
+    let cy = H / 2 + getRoadOffset(wx);
+    if (!fd) { ctx.moveTo(sx, cy); fd = true; } else ctx.lineTo(sx, cy);
+  }
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+}
+
+function drawBGObjects() {
+  bgObjects.forEach(obj => {
+    let sx = obj.wx - cameraX;
+    if (sx < -60 || sx > W + 60) return;
+    let sy = obj.y;
+    ctx.save();
+    ctx.translate(sx, sy);
+    ctx.scale(obj.scale, obj.scale);
+    if (obj.type < 0.3) {
+      // Tree
+      ctx.fillStyle = '#5a3010';
+      ctx.fillRect(-4, -20, 8, 24);
+      ctx.fillStyle = '#2d8a30';
+      ctx.beginPath();
+      ctx.arc(0, -28, 18, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#3aaa3a';
+      ctx.beginPath();
+      ctx.arc(0, -38, 13, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (obj.type < 0.55) {
+      // Bush
+      ctx.fillStyle = '#4a9a28';
+      ctx.beginPath();
+      ctx.arc(0, -8, 14, 0, Math.PI * 2);
+      ctx.arc(10, -6, 10, 0, Math.PI * 2);
+      ctx.arc(-10, -5, 11, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (obj.type < 0.72) {
+      // Rock
+      ctx.fillStyle = '#888';
+      ctx.beginPath();
+      ctx.ellipse(0, -5, 16, 10, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#aaa';
+      ctx.beginPath();
+      ctx.ellipse(-4, -8, 9, 6, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (obj.type < 0.85) {
+      // Mountain silhouette (far)
+      ctx.fillStyle = 'rgba(150,170,200,0.5)';
+      ctx.beginPath();
+      ctx.moveTo(-35, 10);
+      ctx.lineTo(0, -55);
+      ctx.lineTo(35, 10);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(180,195,220,0.4)';
+      ctx.beginPath();
+      ctx.moveTo(-20, 10);
+      ctx.lineTo(15, -35);
+      ctx.lineTo(50, 10);
+      ctx.fill();
+    } else {
+      // Electric pole
+      ctx.strokeStyle = '#555';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(0, -50);
+      ctx.lineTo(0, 10);
+      ctx.stroke();
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(-14, -38);
+      ctx.lineTo(14, -38);
+      ctx.stroke();
+      // Wires
+      ctx.strokeStyle = '#333';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(-14, -36);
+      ctx.quadraticCurveTo(0, -28, 14, -36);
+      ctx.stroke();
+    }
+    ctx.restore();
+  });
+}
+
+function drawStopSign(stopObj) {
+  let sx = stopObj.x - cameraX;
+  if (sx < -100 || sx > W + 100) return;
+  let roadY = H / 2 + getRoadOffset(stopObj.x);
+  ctx.save();
+  ctx.translate(sx, roadY - 100);
+  // Pole
+  ctx.strokeStyle = '#888';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(0, 70);
+  ctx.stroke();
+  // Sign
+  ctx.fillStyle = '#dc3232';
+  ctx.beginPath();
+  ctx.roundRect(-30, -30, 60, 30, 6);
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 9px Nunito';
+  ctx.textAlign = 'center';
+  ctx.fillText(stopObj.name, 0, -10);
+  ctx.restore();
+}
+
+function drawBus() {
+  let busRoadY = H / 2 + getRoadOffset(busX);
+  let sx = W / 2 + (atStop ? 0 : engineShake * (Math.random() - 0.5));
+  let sy = busRoadY;
+
+  busAnim += 0.15;
+
+  ctx.save();
+  ctx.translate(sx, sy);
+
+  // Shadow
+  ctx.save();
+  ctx.globalAlpha = 0.25;
+  ctx.fillStyle = '#000';
+  ctx.scale(1, 0.3);
+  ctx.beginPath();
+  ctx.ellipse(0, 10, 60, 18, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  // Bus body
+  const BW = 110, BH = 48;
+  // Main body - white
+  ctx.fillStyle = '#f0f0f0';
+  ctx.beginPath();
+  ctx.roundRect(-BW / 2, -BH / 2 - 8, BW, BH, 10);
+  ctx.fill();
+
+  // Red stripe top
+  ctx.fillStyle = '#dc3232';
+  ctx.beginPath();
+  ctx.roundRect(-BW / 2, -BH / 2 - 8, BW, 14, [10, 10, 0, 0]);
+  ctx.fill();
+
+  // Red stripe bottom
+  ctx.fillStyle = '#dc3232';
+  ctx.fillRect(-BW / 2, BH / 2 - 16, BW, 8);
+
+  // Windows
+  ctx.fillStyle = 'rgba(150,210,255,0.85)';
+  for (let i = 0; i < 5; i++) {
+    let wx = -BW / 2 + 14 + i * 19;
+    ctx.beginPath();
+    ctx.roundRect(wx, -BH / 2 + 0, 14, 16, 3);
+    ctx.fill();
+    // window glare
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.fillRect(wx + 2, -BH / 2 + 2, 4, 6);
+    ctx.fillStyle = 'rgba(150,210,255,0.85)';
+  }
+
+  // Front windshield
+  ctx.fillStyle = 'rgba(150,210,255,0.7)';
+  ctx.beginPath();
+  ctx.roundRect(BW / 2 - 20, -BH / 2 + 2, 16, 20, 3);
+  ctx.fill();
+
+  // PAMUKKALE text
+  ctx.fillStyle = '#dc3232';
+  ctx.font = 'bold 8px Baloo 2';
+  ctx.textAlign = 'center';
+  ctx.fillText('PAMUKKALE', 0, BH / 2 - 20);
+
+  // Jumbo logo small
+  ctx.fillStyle = '#333';
+  ctx.font = 'bold 6px Nunito';
+  ctx.fillText('Jumbo', -20, -BH / 2 + 28);
+
+  // Headlights
+  ctx.fillStyle = '#ffe082';
+  ctx.beginPath();
+  ctx.ellipse(BW / 2 - 5, BH / 2 - 28, 5, 4, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(BW / 2 - 5, -BH / 2 + 16, 5, 4, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Wheels (4)
+  [[-32, BH / 2], [-32 + 20, BH / 2], [32, BH / 2], [32 - 20, BH / 2]].forEach(([wx, wy], i) => {
+    let angle = busAnim + i * 0.3;
+    ctx.save();
+    ctx.translate(wx, wy - 2);
+    // Tire
+    ctx.fillStyle = '#222';
+    ctx.beginPath();
+    ctx.arc(0, 0, 9, 0, Math.PI * 2);
+    ctx.fill();
+    // Hub
+    ctx.fillStyle = '#aaa';
+    ctx.beginPath();
+    ctx.arc(0, 0, 5, 0, Math.PI * 2);
+    ctx.fill();
+    // Spokes
+    ctx.strokeStyle = '#888';
+    ctx.lineWidth = 1.5;
+    for (let s = 0; s < 4; s++) {
+      let a2 = angle + s * Math.PI / 2;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(Math.cos(a2) * 4, Math.sin(a2) * 4);
+      ctx.stroke();
+    }
+    ctx.restore();
+  });
+
+  // Exhaust puff when moving
+  if (busSpeed > 1) {
+    ctx.globalAlpha = 0.3 * (busSpeed / 5);
+    ctx.fillStyle = '#ccc';
+    let px = -BW / 2 - 8;
+    for (let i = 0; i < 3; i++) {
+      let r = 4 + i * 3;
+      ctx.beginPath();
+      ctx.arc(px - i * 8, 0, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  ctx.restore();
+}
+
+function drawItems(t) {
+  items.forEach(item => {
+    if (item.collected) return;
+    let sx = item.wx - cameraX;
+    if (sx < -40 || sx > W + 40) return;
+    let roadY = H / 2 + getRoadOffset(item.wx);
+    let sy = item.lane + Math.sin(t * 2 + item.bobOffset) * 6;
+    // Glow
+    ctx.save();
+    ctx.globalAlpha = 0.35;
+    let grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, 28);
+    grd.addColorStop(0, item.type.color);
+    grd.addColorStop(1, 'transparent');
+    ctx.fillStyle = grd;
+    ctx.beginPath();
+    ctx.arc(sx, sy, 28, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Emoji
+    ctx.font = '26px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(item.type.emoji, sx, sy);
+  });
+}
+
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.save();
+    ctx.globalAlpha = p.life;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+}
+
+function drawHorizon() {
+  // Sky-ground divider with road perspective
+  let grad = ctx.createLinearGradient(0, H * 0.48, 0, H * 0.56);
+  grad.addColorStop(0, 'rgba(180,220,255,0)');
+  grad.addColorStop(0.5, 'rgba(120,180,100,0.4)');
+  grad.addColorStop(1, 'rgba(100,160,60,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, H * 0.48, W, H * 0.1);
+}
+
+function drawProgressBar() {
+  let progress = busX / WORLD_END;
+  let barW = W - 40;
+  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  ctx.beginPath();
+  ctx.roundRect(20, H - 24, barW, 10, 5);
+  ctx.fill();
+
+  ctx.fillStyle = '#dc3232';
+  ctx.beginPath();
+  ctx.roundRect(20, H - 24, barW * progress, 10, 5);
+  ctx.fill();
+
+  // Stop markers
+  STOPS.forEach((s, i) => {
+    let px = 20 + (s.x / WORLD_END) * barW;
+    ctx.fillStyle = i < nextStopIdx ? '#aaa' : '#fff';
+    ctx.beginPath();
+    ctx.arc(px, H - 19, 4, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+// ─── COLLISION ───
+function checkCollisions() {
+  let busRoadY = H / 2 + getRoadOffset(busX);
+  items.forEach(item => {
+    if (item.collected) return;
+    let dx = item.wx - busX;
+    let dy = item.lane - busRoadY;
+    if (Math.abs(dx) < 45 && Math.abs(dy) < 40) {
+      item.collected = true;
+      score += item.type.pts;
+      scoreDisplay.textContent = score;
+      let sx = W / 2;
+      spawnParticles(sx, H / 2, item.type.color);
+      showItemPopup(item.type.emoji + ' ' + item.type.label, item.type.pts);
+    }
+  });
+}
+
+function checkStops() {
+  if (nextStopIdx >= STOPS.length) return;
+  let nextStop = STOPS[nextStopIdx];
+  let dist = nextStop.x - busX;
+  if (dist <= 0 && !atStop) {
+    atStop = true;
+    stopTimer = 2.5;
+    state = 'stopped';
+    showStopBanner(nextStop.name);
+    stopDisplay.querySelector ? null : null;
+    stopDisplay.textContent = '📍 ' + nextStop.name;
+    currentStopIdx = nextStopIdx;
+    nextStopIdx++;
+    busSpeed = 0;
+    // Check if final stop
+    if (currentStopIdx === STOPS.length - 1) {
+      setTimeout(() => showEndScreen(), 2000);
+    }
+  }
+}
+
+// ─── END SCREEN ───
+function showEndScreen() {
+  state = 'end';
+  const overlay = document.getElementById('overlay');
+  overlay.innerHTML = `
+    <div style="font-size:52px;margin-bottom:8px">🎉</div>
+    <h1 style="font-size:32px;margin-bottom:12px">Ankara'ya Vardık!</h1>
+    <div style="background:rgba(220,50,50,0.15);border:1px solid rgba(220,50,50,0.4);border-radius:12px;padding:20px 28px;color:rgba(255,255,255,0.9);font-size:15px;line-height:2;margin-bottom:20px;">
+      ⭐ Toplam Puan: <strong style="color:#ffd700;font-size:22px">${score}</strong><br>
+      🚌 Tüm duraklar tamamlandı!
+    </div>
+    <div style="background:rgba(255,180,200,0.12);border:1px solid rgba(255,150,180,0.35);border-radius:16px;padding:22px 30px;max-width:420px;color:#fff;font-size:15px;line-height:1.9;margin-bottom:24px;">
+      💌 <em>Pamukkale'de başlayan yolculuk, her zaman devam eder.<br>
+      2. ayın kutlu olsun — bu yolda seninle olmak güzel. 🐱🦈</em>
+    </div>
+    <button class="btn" onclick="location.reload()">YENİDEN OYNA 🚌</button>
+  `;
+  overlay.style.display = 'flex';
+}
+
+// ─── UPDATE ───
+function update(dt) {
+  if (state === 'stopped') {
+    stopTimer -= dt;
+    if (stopTimer <= 0) {
+      atStop = false;
+      state = 'playing';
+      if (currentStopIdx === STOPS.length - 1) return;
+    }
+    return;
+  }
+  if (state !== 'playing') return;
+
+  // Timer
+  timeLeft -= dt;
+  if (timeLeft < 0) timeLeft = 0;
+  let m = Math.floor(timeLeft / 60);
+  let s2 = Math.floor(timeLeft % 60);
+  timerDisplay.textContent = m + ':' + String(s2).padStart(2, '0');
+
+  // Speed
+  const MAX_SPEED = 5;
+  if (keys['ArrowUp'] || keys['Space'] || keys['KeyW']) {
+    busSpeed = Math.min(busSpeed + 0.12, MAX_SPEED);
+    engineShake = 1;
+  } else if (keys['ArrowDown'] || keys['KeyS']) {
+    busSpeed = Math.max(busSpeed - 0.18, 0);
+    engineShake = 0;
+  } else {
+    busSpeed = Math.max(busSpeed - 0.04, 1.5); // auto-roll
+    engineShake = 0.3;
+  }
+
+  // Slow near stops
+  if (nextStopIdx < STOPS.length) {
+    let distToStop = STOPS[nextStopIdx].x - busX;
+    if (distToStop < 150 && distToStop > 0) {
+      busSpeed = Math.min(busSpeed, distToStop / 30);
+    }
+  }
+
+  busX += busSpeed;
+  if (busX > WORLD_END) busX = WORLD_END;
+
+  // Camera
+  cameraX = busX - W / 2;
+
+  checkCollisions();
+  checkStops();
+
+  // Particles
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.1;
+    p.life -= 0.03;
+  });
+  particles = particles.filter(p => p.life > 0);
+}
+
+// ─── RENDER ───
+function render(t) {
+  ctx.clearRect(0, 0, W, H);
+  drawSky();
+  drawGround();
+  drawClouds(0.016);
+  drawHorizon();
+  drawBGObjects();
+  drawRoad();
+  STOPS.forEach(drawStopSign);
+  drawItems(t / 1000);
+  drawBus();
+  drawParticles();
+  drawProgressBar();
+}
+
+// ─── LOOP ───
+function loop(ts) {
+  let dt = Math.min((ts - lastTime) / 1000, 0.05);
+  lastTime = ts;
+  update(dt);
+  render(ts);
+  requestAnimationFrame(loop);
+}
+
+// ─── START ───
+document.getElementById('startBtn').addEventListener('click', () => {
+  generateWorld();
+  state = 'playing';
+  busX = 0;
+  cameraX = -W / 2;
+  busSpeed = 1.5;
+  score = 0;
+  timeLeft = 300;
+  currentStopIdx = 0;
+  nextStopIdx = 1;
+  atStop = false;
+  scoreDisplay.textContent = '0';
+  stopDisplay.textContent = '🚌 Denizli → Ankara';
+  document.getElementById('overlay').style.display = 'none';
+  requestAnimationFrame(ts => { lastTime = ts; requestAnimationFrame(loop); });
+});
+</script>
 </body>
 </html>
