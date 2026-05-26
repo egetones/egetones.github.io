@@ -10,7 +10,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: #1a0a2e;
+    background: #0f172a;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,15 +28,15 @@
 
   canvas {
     display: block;
-    border-radius: 18px;
-    box-shadow: 0 0 60px rgba(220,50,50,0.4), 0 0 120px rgba(220,50,50,0.15);
-    border: 3px solid rgba(220,50,50,0.5);
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+    border: 4px solid #1e293b;
   }
 
   #ui {
     position: absolute;
     top: 0; left: 0; right: 0;
-    padding: 12px 18px;
+    padding: 16px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -45,24 +45,24 @@
   }
 
   .ui-box {
-    background: rgba(0,0,0,0.55);
-    border: 1.5px solid rgba(255,255,255,0.15);
-    border-radius: 10px;
-    padding: 6px 14px;
-    color: #fff;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 8px 16px;
+    color: #f8fafc;
     font-family: 'Baloo 2', cursive;
     font-size: 15px;
     font-weight: 600;
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(8px);
   }
 
-  .ui-box span { color: #ff6b6b; font-weight: 800; }
+  .ui-box span { color: #f43f5e; font-weight: 800; }
 
   #overlay {
     position: absolute;
     inset: 0;
-    background: rgba(15,5,30,0.92);
-    border-radius: 18px;
+    background: rgba(15, 23, 42, 0.95);
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -74,68 +74,57 @@
 
   #overlay h1 {
     font-family: 'Baloo 2', cursive;
-    font-size: 42px;
+    font-size: 46px;
     font-weight: 800;
-    color: #fff;
-    text-shadow: 0 0 30px rgba(220,50,50,0.8);
-    margin-bottom: 8px;
+    color: #f8fafc;
+    margin-bottom: 12px;
   }
 
   #overlay .sub {
     font-size: 16px;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 30px;
+    color: #94a3b8;
+    margin-bottom: 32px;
     line-height: 1.6;
   }
 
   #overlay .route-info {
-    background: rgba(220,50,50,0.15);
-    border: 1px solid rgba(220,50,50,0.4);
+    background: rgba(244, 63, 94, 0.1);
+    border: 1px solid rgba(244, 63, 94, 0.3);
     border-radius: 12px;
-    padding: 12px 20px;
-    color: rgba(255,255,255,0.85);
-    font-size: 13px;
-    margin-bottom: 28px;
+    padding: 14px 24px;
+    color: #e2e8f0;
+    font-size: 14px;
+    margin-bottom: 32px;
     line-height: 1.8;
+    letter-spacing: 0.5px;
   }
 
   .btn {
-    background: linear-gradient(135deg, #dc3232, #a01010);
+    background: linear-gradient(135deg, #e11d48, #be123c);
     border: none;
     border-radius: 50px;
     color: #fff;
     font-family: 'Baloo 2', cursive;
     font-size: 20px;
     font-weight: 800;
-    padding: 14px 48px;
+    padding: 14px 52px;
     cursor: pointer;
     pointer-events: all;
-    box-shadow: 0 4px 20px rgba(220,50,50,0.5);
-    transition: transform 0.1s, box-shadow 0.1s;
-    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+    transition: transform 0.15s, box-shadow 0.15s;
+    letter-spacing: 0.5px;
   }
-  .btn:hover { transform: scale(1.05); box-shadow: 0 6px 28px rgba(220,50,50,0.7); }
+  .btn:hover { transform: scale(1.03); box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4); }
   .btn:active { transform: scale(0.97); }
-
-  #controls-hint {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: rgba(255,255,255,0.4);
-    font-size: 12px;
-    pointer-events: none;
-    z-index: 10;
-  }
 
   #stopBanner {
     position: absolute;
-    top: 60px;
+    top: 75px;
     left: 50%;
     transform: translateX(-50%) translateY(-20px);
-    background: linear-gradient(135deg, #dc3232, #a01010);
+    background: linear-gradient(135deg, #e11d48, #be123c);
     border-radius: 50px;
-    padding: 8px 28px;
+    padding: 10px 32px;
     color: #fff;
     font-family: 'Baloo 2', cursive;
     font-size: 18px;
@@ -145,7 +134,7 @@
     opacity: 0;
     transition: opacity 0.3s, transform 0.3s;
     white-space: nowrap;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
   }
   #stopBanner.show {
     opacity: 1;
@@ -154,14 +143,14 @@
 
   #itemPopup {
     position: absolute;
-    top: 110px;
+    top: 130px;
     left: 50%;
     transform: translateX(-50%) scale(0.5);
-    background: rgba(0,0,0,0.8);
-    border: 2px solid rgba(255,220,0,0.6);
+    background: #0f172a;
+    border: 2px solid #eab308;
     border-radius: 12px;
-    padding: 6px 18px;
-    color: #ffd700;
+    padding: 8px 20px;
+    color: #facc15;
     font-family: 'Baloo 2', cursive;
     font-size: 16px;
     font-weight: 700;
@@ -170,6 +159,7 @@
     opacity: 0;
     transition: all 0.2s;
     white-space: nowrap;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
   }
   #itemPopup.show {
     opacity: 1;
@@ -190,7 +180,6 @@
 
   <div id="stopBanner">📍 Durak: Denizli</div>
   <div id="itemPopup">+10 Pembe Kalem! ✒️</div>
-  <div id="controls-hint">← → hareket | BOŞLUK / ↑ hızlan | ↓ fren</div>
 
   <div id="overlay">
     <h1>🚌 Pamukkale Yolculuğu</h1>
@@ -241,7 +230,7 @@ const ITEM_TYPES = [
 let state = 'menu'; // menu | playing | stopped | end
 let score = 0;
 let busX = 0; // world x
-let busLaneOffset = 0; // Şerit sapmasını kontrol eden YENİ değişken
+let busLaneOffset = 0; 
 let busSpeed = 0;
 let cameraX = 0;
 let timeLeft = 300; // 5 minutes
@@ -253,9 +242,10 @@ let atStop = false;
 let items = [];
 let particles = [];
 let bgObjects = [];
-let roadCurve = []; // array of {x, offset} for road waviness
+let roadCurve = []; 
 let clouds = [];
-let busAnim = 0; // wheel rotation
+let parallaxMountains = []; // Kaliteli paralaks dağ dizisi
+let busAnim = 0; 
 let engineShake = 0;
 
 // ─── GENERATE WORLD ───
@@ -264,42 +254,53 @@ function generateWorld() {
   bgObjects = [];
   roadCurve = [];
   clouds = [];
+  parallaxMountains = [];
 
   // Road curve waypoints
   for (let x = 0; x <= WORLD_END + 800; x += 200) {
     roadCurve.push({ x, offset: Math.sin(x * 0.0008) * 60 });
   }
 
+  // Generate artistic layered parallax mountains
+  for (let i = 0; i < 60; i++) {
+    parallaxMountains.push({
+      wx: i * 250 + Math.random() * 80,
+      width: 350 + Math.random() * 250,
+      height: 70 + Math.random() * 90,
+      layer: Math.random() < 0.5 ? 0 : 1 // 0: uzak katman, 1: orta katman
+    });
+  }
+
   // Scatter items (avoid stop zones)
   let itemSpacing = WORLD_END / 90;
   for (let i = 0; i < 90; i++) {
     let wx = 300 + i * itemSpacing + (Math.random() - 0.5) * itemSpacing * 0.8;
-    // skip if near a stop
     let nearStop = STOPS.some(s => Math.abs(s.x - wx) < 300);
     if (nearStop) continue;
     
-    // GÜNCELLENDİ: Eşyaların havada süzülmemesi için kavisli yol offset'i hesaplaması
     let laneOffset = (Math.random() < 0.5 ? -1 : 1) * (15 + Math.random() * 50);
     let type = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
     items.push({ wx, laneOffset, type, collected: false, bobOffset: Math.random() * Math.PI * 2 });
   }
 
-  // BG objects
-  for (let i = 0; i < 300; i++) {
+  // Roadside objects tied perfectly to the highway curves
+  for (let i = 0; i < 250; i++) {
     let wx = Math.random() * WORLD_END;
+    let nearStop = STOPS.some(s => Math.abs(s.x - wx) < 120);
+    if (nearStop) continue;
+
     let side = Math.random() < 0.5 ? -1 : 1;
-    let y = H / 2 + side * (120 + Math.random() * 100);
     let type = Math.random();
-    bgObjects.push({ wx, y, type, scale: 0.7 + Math.random() * 0.7 });
+    bgObjects.push({ wx, side, type, scale: 0.6 + Math.random() * 0.5 });
   }
 
   // Clouds
-  for (let i = 0; i < 60; i++) {
+  for (let i = 0; i < 40; i++) {
     clouds.push({
       wx: Math.random() * WORLD_END,
-      y: 30 + Math.random() * 80,
-      scale: 0.5 + Math.random() * 1,
-      speed: 0.1 + Math.random() * 0.15
+      y: 25 + Math.random() * 75,
+      scale: 0.6 + Math.random() * 0.8,
+      speed: 0.08 + Math.random() * 0.12
     });
   }
 }
@@ -314,7 +315,10 @@ function getRoadOffset(wx) {
 
 // ─── INPUT ───
 const keys = {};
-window.addEventListener('keydown', e => { keys[e.code] = true; if(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault(); });
+window.addEventListener('keydown', e => { 
+  keys[e.code] = true; 
+  if(['KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(e.code)) e.preventDefault(); 
+});
 window.addEventListener('keyup', e => { keys[e.code] = false; });
 
 // ─── STOP BANNER ───
@@ -358,36 +362,59 @@ function spawnParticles(sx, sy, color) {
 function drawSky() {
   let grad = ctx.createLinearGradient(0, 0, 0, H * 0.55);
   let progress = busX / WORLD_END;
-  // shift from warm sunset to blue afternoon
-  let r1 = Math.round(135 + progress * 30);
-  let g1 = Math.round(180 + progress * 40);
-  let b1 = Math.round(220);
+  let r1 = Math.round(140 - progress * 25);
+  let g1 = Math.round(185 - progress * 20);
+  let b1 = Math.round(230 - progress * 10);
   grad.addColorStop(0, `rgb(${r1},${g1},${b1})`);
-  grad.addColorStop(1, `rgb(200,230,255)`);
+  grad.addColorStop(1, '#f1f5f9');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H * 0.55);
 }
 
+function drawParallaxMountains() {
+  // Arka Plan Dağ Katmanları (Gerçekçi paralaks derinliği için)
+  for (let layer = 0; layer < 2; layer++) {
+    ctx.fillStyle = layer === 0 ? '#cbd5e1' : '#94a3b8';
+    let scrollFactor = layer === 0 ? 0.12 : 0.25; // Katman hız farklılıkları
+
+    parallaxMountains.forEach(m => {
+      if (m.layer !== layer) return;
+      let sx = m.wx - cameraX * scrollFactor;
+      // Sonsuz döngü simülasyonu
+      if (sx < -m.width) sx += WORLD_END;
+      
+      let sy = H * 0.51;
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.lineTo(sx + m.width / 2, sy - m.height);
+      ctx.lineTo(sx + m.width, sy);
+      ctx.closePath();
+      ctx.fill();
+    });
+  }
+}
+
 function drawGround() {
   let grad = ctx.createLinearGradient(0, H * 0.5, 0, H);
-  grad.addColorStop(0, '#7ec850');
-  grad.addColorStop(0.4, '#6ab040');
-  grad.addColorStop(1, '#4a8020');
+  grad.addColorStop(0, '#475569'); // Ufuk çizgisine yakın yumuşak geçişli zemin tonu
+  grad.addColorStop(0.05, '#22c55e');
+  grad.addColorStop(0.5, '#16a34a');
+  grad.addColorStop(1, '#15803d');
   ctx.fillStyle = grad;
   ctx.fillRect(0, H * 0.5, W, H * 0.5);
 }
 
 function drawClouds(dt) {
   clouds.forEach(c => {
-    c.wx -= c.speed * dt * 30; // very slow drift
+    c.wx -= c.speed * dt * 30;
     if (c.wx < -200) c.wx = WORLD_END + 200;
-    let sx = c.wx - cameraX;
+    let sx = c.wx - cameraX * 0.4;
     if (sx < -200 || sx > W + 200) return;
     ctx.save();
-    ctx.globalAlpha = 0.82;
-    ctx.fillStyle = '#fff';
+    ctx.globalAlpha = 0.85;
+    ctx.fillStyle = '#ffffff';
     let cx = sx, cy = c.y;
-    let r = 28 * c.scale;
+    let r = 24 * c.scale;
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.arc(cx + r * 0.8, cy - r * 0.3, r * 0.75, 0, Math.PI * 2);
@@ -398,11 +425,10 @@ function drawClouds(dt) {
 }
 
 function drawRoad() {
-  // Draw wide road following curve
   ctx.save();
   const ROAD_W = 180;
 
-  // Road base
+  // Asfalt rengi jenerik yapay zeka grisinden premium füme/asfalt rengine geçirildi
   ctx.beginPath();
   let started = false;
   for (let wx = cameraX - 20; wx <= cameraX + W + 20; wx += 8) {
@@ -417,32 +443,32 @@ function drawRoad() {
     ctx.lineTo(sx, cy + ROAD_W / 2);
   }
   ctx.closePath();
-  ctx.fillStyle = '#555';
+  ctx.fillStyle = '#334155';
   ctx.fill();
 
-  // Road shoulders (white)
+  // Emniyet Şeritleri (Beyaz)
   [-1, 1].forEach(side => {
     ctx.beginPath();
     let s2 = false;
     for (let wx = cameraX - 20; wx <= cameraX + W + 20; wx += 8) {
       let sx = wx - cameraX;
       let cy = H / 2 + getRoadOffset(wx) + side * (ROAD_W / 2 - 6);
-      if (!s2) { ctx.moveTo(sx, cy - 3); s2 = true; }
-      else ctx.lineTo(sx, cy - 3);
+      if (!s2) { ctx.moveTo(sx, cy - 2); s2 = true; }
+      else ctx.lineTo(sx, cy - 2);
     }
     for (let wx = cameraX + W + 20; wx >= cameraX - 20; wx -= 8) {
       let sx = wx - cameraX;
       let cy = H / 2 + getRoadOffset(wx) + side * (ROAD_W / 2 - 6);
-      ctx.lineTo(sx, cy + 3);
+      ctx.lineTo(sx, cy + 2);
     }
     ctx.closePath();
-    ctx.fillStyle = '#eee';
+    ctx.fillStyle = '#cbd5e1';
     ctx.fill();
   });
 
-  // Center dashes
-  ctx.setLineDash([30, 20]);
-  ctx.strokeStyle = '#ffe082';
+  // Yol Kesik Çizgileri
+  ctx.setLineDash([25, 20]);
+  ctx.strokeStyle = '#fef08a';
   ctx.lineWidth = 3;
   ctx.beginPath();
   let fd = false;
@@ -460,73 +486,54 @@ function drawBGObjects() {
   bgObjects.forEach(obj => {
     let sx = obj.wx - cameraX;
     if (sx < -60 || sx > W + 60) return;
-    let sy = obj.y;
+    
+    // Nesneler yolun viraj dalgasına göre mükemmel bir konumda hizalanır
+    let roadY = H / 2 + getRoadOffset(obj.wx);
+    let sy = roadY + obj.side * (110 + Math.random() * 10);
+
     ctx.save();
     ctx.translate(sx, sy);
     ctx.scale(obj.scale, obj.scale);
-    if (obj.type < 0.3) {
-      // Tree
-      ctx.fillStyle = '#5a3010';
-      ctx.fillRect(-4, -20, 8, 24);
-      ctx.fillStyle = '#2d8a30';
+    
+    if (obj.type < 0.4) {
+      // Ağaçlar
+      ctx.fillStyle = '#78350f';
+      ctx.fillRect(-3, -15, 6, 18);
+      ctx.fillStyle = '#15803d';
       ctx.beginPath();
-      ctx.arc(0, -28, 18, 0, Math.PI * 2);
+      ctx.arc(0, -22, 15, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = '#3aaa3a';
+      ctx.fillStyle = '#16a34a';
       ctx.beginPath();
-      ctx.arc(0, -38, 13, 0, Math.PI * 2);
+      ctx.arc(0, -30, 11, 0, Math.PI * 2);
       ctx.fill();
-    } else if (obj.type < 0.55) {
-      // Bush
-      ctx.fillStyle = '#4a9a28';
+    } else if (obj.type < 0.75) {
+      // Çalılar
+      ctx.fillStyle = '#166534';
       ctx.beginPath();
-      ctx.arc(0, -8, 14, 0, Math.PI * 2);
-      ctx.arc(10, -6, 10, 0, Math.PI * 2);
-      ctx.arc(-10, -5, 11, 0, Math.PI * 2);
-      ctx.fill();
-    } else if (obj.type < 0.72) {
-      // Rock
-      ctx.fillStyle = '#888';
-      ctx.beginPath();
-      ctx.ellipse(0, -5, 16, 10, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#aaa';
-      ctx.beginPath();
-      ctx.ellipse(-4, -8, 9, 6, -0.3, 0, Math.PI * 2);
-      ctx.fill();
-    } else if (obj.type < 0.85) {
-      // Mountain silhouette (far)
-      ctx.fillStyle = 'rgba(150,170,200,0.5)';
-      ctx.beginPath();
-      ctx.moveTo(-35, 10);
-      ctx.lineTo(0, -55);
-      ctx.lineTo(35, 10);
-      ctx.fill();
-      ctx.fillStyle = 'rgba(180,195,220,0.4)';
-      ctx.beginPath();
-      ctx.moveTo(-20, 10);
-      ctx.lineTo(15, -35);
-      ctx.lineTo(50, 10);
+      ctx.arc(0, -6, 11, 0, Math.PI * 2);
+      ctx.arc(8, -5, 8, 0, Math.PI * 2);
+      ctx.arc(-8, -4, 9, 0, Math.PI * 2);
       ctx.fill();
     } else {
-      // Electric pole
-      ctx.strokeStyle = '#555';
-      ctx.lineWidth = 3;
+      // Elektrik Direği
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
-      ctx.moveTo(0, -50);
+      ctx.moveTo(0, -45);
       ctx.lineTo(0, 10);
       ctx.stroke();
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(-14, -38);
-      ctx.lineTo(14, -38);
+      ctx.moveTo(-12, -34);
+      ctx.lineTo(12, -34);
       ctx.stroke();
-      // Wires
-      ctx.strokeStyle = '#333';
-      ctx.lineWidth = 1;
+      // Teller
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 0.8;
       ctx.beginPath();
-      ctx.moveTo(-14, -36);
-      ctx.quadraticCurveTo(0, -28, 14, -36);
+      ctx.moveTo(-12, -33);
+      ctx.quadraticCurveTo(0, -26, 12, -33);
       ctx.stroke();
     }
     ctx.restore();
@@ -538,21 +545,24 @@ function drawStopSign(stopObj) {
   if (sx < -100 || sx > W + 100) return;
   let roadY = H / 2 + getRoadOffset(stopObj.x);
   ctx.save();
-  ctx.translate(sx, roadY - 100);
-  // Pole
-  ctx.strokeStyle = '#888';
+  ctx.translate(sx, roadY - 95);
+  
+  // Tabela Direği
+  ctx.strokeStyle = '#64748b';
   ctx.lineWidth = 3;
   ctx.beginPath();
   ctx.moveTo(0, 0);
-  ctx.lineTo(0, 70);
+  ctx.lineTo(0, 65);
   ctx.stroke();
-  // Sign
-  ctx.fillStyle = '#dc3232';
+  
+  // Tabela Gövdesi
+  ctx.fillStyle = '#e11d48';
   ctx.beginPath();
-  ctx.roundRect(-30, -30, 60, 30, 6);
+  ctx.roundRect(-30, -26, 60, 26, 6);
   ctx.fill();
+  
   ctx.fillStyle = '#fff';
-  ctx.font = 'bold 9px Nunito';
+  ctx.font = 'bold 10px Nunito';
   ctx.textAlign = 'center';
   ctx.fillText(stopObj.name, 0, -10);
   ctx.restore();
@@ -561,7 +571,6 @@ function drawStopSign(stopObj) {
 function drawBus() {
   let busRoadY = H / 2 + getRoadOffset(busX);
   let sx = W / 2 + (atStop ? 0 : engineShake * (Math.random() - 0.5));
-  // GÜNCELLENDİ: Otobüs artık şerit sapmasıyla yolda hareket edebilir
   let sy = busRoadY + busLaneOffset;
 
   busAnim += 0.15;
@@ -569,9 +578,9 @@ function drawBus() {
   ctx.save();
   ctx.translate(sx, sy);
 
-  // Shadow
+  // Gölge
   ctx.save();
-  ctx.globalAlpha = 0.25;
+  ctx.globalAlpha = 0.2;
   ctx.fillStyle = '#000';
   ctx.scale(1, 0.3);
   ctx.beginPath();
@@ -579,56 +588,57 @@ function drawBus() {
   ctx.fill();
   ctx.restore();
 
-  // Bus body
+  // Otobüs Gövdesi
   const BW = 110, BH = 48;
-  // Main body - white
-  ctx.fillStyle = '#f0f0f0';
+  
+  // Beyaz Orta Kısım
+  ctx.fillStyle = '#f8fafc';
   ctx.beginPath();
   ctx.roundRect(-BW / 2, -BH / 2 - 8, BW, BH, 10);
   ctx.fill();
 
-  // Red stripe top
-  ctx.fillStyle = '#dc3232';
+  // Üst Kırmızı Kuşak
+  ctx.fillStyle = '#e11d48';
   ctx.beginPath();
   ctx.roundRect(-BW / 2, -BH / 2 - 8, BW, 14, [10, 10, 0, 0]);
   ctx.fill();
 
-  // Red stripe bottom
-  ctx.fillStyle = '#dc3232';
+  // Alt Kırmızı Kuşak
+  ctx.fillStyle = '#e11d48';
   ctx.fillRect(-BW / 2, BH / 2 - 16, BW, 8);
 
-  // Windows
-  ctx.fillStyle = 'rgba(150,210,255,0.85)';
+  // Camlar
+  ctx.fillStyle = 'rgba(186, 230, 253, 0.9)';
   for (let i = 0; i < 5; i++) {
     let wx = -BW / 2 + 14 + i * 19;
     ctx.beginPath();
     ctx.roundRect(wx, -BH / 2 + 0, 14, 16, 3);
     ctx.fill();
-    // window glare
     ctx.fillStyle = 'rgba(255,255,255,0.4)';
     ctx.fillRect(wx + 2, -BH / 2 + 2, 4, 6);
-    ctx.fillStyle = 'rgba(150,210,255,0.85)';
+    ctx.fillStyle = 'rgba(186, 230, 253, 0.9)';
   }
 
-  // Front windshield
-  ctx.fillStyle = 'rgba(150,210,255,0.7)';
+  // Ön Cam
+  ctx.fillStyle = 'rgba(186, 230, 253, 0.8)';
   ctx.beginPath();
   ctx.roundRect(BW / 2 - 20, -BH / 2 + 2, 16, 20, 3);
   ctx.fill();
 
-  // PAMUKKALE text
-  ctx.fillStyle = '#dc3232';
-  ctx.font = 'bold 8px Baloo 2';
+  // GÜNCELLENDİ: PAMUKKALE yazısı sadece beyaz orta alanda kalacak şekilde küçültüldü ve ortalandı
+  ctx.fillStyle = '#e11d48';
+  ctx.font = 'bold 7.5px "Baloo 2", cursive';
   ctx.textAlign = 'center';
-  ctx.fillText('PAMUKKALE', 0, BH / 2 - 20);
+  ctx.textBaseline = 'middle';
+  ctx.fillText('PAMUKKALE', 0, -2); 
 
-  // Jumbo logo small
-  ctx.fillStyle = '#333';
+  // Jumbo logosu
+  ctx.fillStyle = '#334155';
   ctx.font = 'bold 6px Nunito';
-  ctx.fillText('Jumbo', -20, -BH / 2 + 28);
+  ctx.fillText('Jumbo', -22, 6);
 
-  // Headlights
-  ctx.fillStyle = '#ffe082';
+  // Farlar
+  ctx.fillStyle = '#fef08a';
   ctx.beginPath();
   ctx.ellipse(BW / 2 - 5, BH / 2 - 28, 5, 4, 0, 0, Math.PI * 2);
   ctx.fill();
@@ -636,23 +646,20 @@ function drawBus() {
   ctx.ellipse(BW / 2 - 5, -BH / 2 + 16, 5, 4, 0, 0, Math.PI * 2);
   ctx.fill();
 
-  // Wheels (4)
+  // Tekerlekler
   [[-32, BH / 2], [-32 + 20, BH / 2], [32, BH / 2], [32 - 20, BH / 2]].forEach(([wx, wy], i) => {
     let angle = busAnim + i * 0.3;
     ctx.save();
     ctx.translate(wx, wy - 2);
-    // Tire
-    ctx.fillStyle = '#222';
+    ctx.fillStyle = '#1e293b';
     ctx.beginPath();
     ctx.arc(0, 0, 9, 0, Math.PI * 2);
     ctx.fill();
-    // Hub
-    ctx.fillStyle = '#aaa';
+    ctx.fillStyle = '#94a3b8';
     ctx.beginPath();
     ctx.arc(0, 0, 5, 0, Math.PI * 2);
     ctx.fill();
-    // Spokes
-    ctx.strokeStyle = '#888';
+    ctx.strokeStyle = '#64748b';
     ctx.lineWidth = 1.5;
     for (let s = 0; s < 4; s++) {
       let a2 = angle + s * Math.PI / 2;
@@ -664,10 +671,10 @@ function drawBus() {
     ctx.restore();
   });
 
-  // Exhaust puff when moving
+  // Egzoz Dumanı
   if (busSpeed > 1) {
-    ctx.globalAlpha = 0.3 * (busSpeed / 5);
-    ctx.fillStyle = '#ccc';
+    ctx.globalAlpha = 0.25 * (busSpeed / 5);
+    ctx.fillStyle = '#cbd5e1';
     let px = -BW / 2 - 8;
     for (let i = 0; i < 3; i++) {
       let r = 4 + i * 3;
@@ -687,24 +694,23 @@ function drawItems(t) {
     let sx = item.wx - cameraX;
     if (sx < -40 || sx > W + 40) return;
     
-    // GÜNCELLENDİ: Eşyalar artık kavisli yola uyumlu duruyor
     let roadY = H / 2 + getRoadOffset(item.wx);
     let sy = roadY + item.laneOffset + Math.sin(t * 2 + item.bobOffset) * 6;
     
-    // Glow
+    // Glow efekti
     ctx.save();
-    ctx.globalAlpha = 0.35;
-    let grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, 28);
+    ctx.globalAlpha = 0.25;
+    let grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, 26);
     grd.addColorStop(0, item.type.color);
     grd.addColorStop(1, 'transparent');
     ctx.fillStyle = grd;
     ctx.beginPath();
-    ctx.arc(sx, sy, 28, 0, Math.PI * 2);
+    ctx.arc(sx, sy, 26, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
 
     // Emoji
-    ctx.font = '26px serif';
+    ctx.font = '24px serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(item.type.emoji, sx, sy);
@@ -724,32 +730,30 @@ function drawParticles() {
 }
 
 function drawHorizon() {
-  // Sky-ground divider with road perspective
-  let grad = ctx.createLinearGradient(0, H * 0.48, 0, H * 0.56);
-  grad.addColorStop(0, 'rgba(180,220,255,0)');
-  grad.addColorStop(0.5, 'rgba(120,180,100,0.4)');
-  grad.addColorStop(1, 'rgba(100,160,60,0)');
+  let grad = ctx.createLinearGradient(0, H * 0.49, 0, H * 0.54);
+  grad.addColorStop(0, 'rgba(241,245,249,0)');
+  grad.addColorStop(0.5, 'rgba(71,85,105,0.2)');
+  grad.addColorStop(1, 'rgba(34,197,94,0)');
   ctx.fillStyle = grad;
-  ctx.fillRect(0, H * 0.48, W, H * 0.1);
+  ctx.fillRect(0, H * 0.49, W, H * 0.05);
 }
 
 function drawProgressBar() {
   let progress = busX / WORLD_END;
   let barW = W - 40;
-  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.3)';
   ctx.beginPath();
   ctx.roundRect(20, H - 24, barW, 10, 5);
   ctx.fill();
 
-  ctx.fillStyle = '#dc3232';
+  ctx.fillStyle = '#e11d48';
   ctx.beginPath();
   ctx.roundRect(20, H - 24, barW * progress, 10, 5);
   ctx.fill();
 
-  // Stop markers
   STOPS.forEach((s, i) => {
     let px = 20 + (s.x / WORLD_END) * barW;
-    ctx.fillStyle = i < nextStopIdx ? '#aaa' : '#fff';
+    ctx.fillStyle = i < nextStopIdx ? '#94a3b8' : '#ffffff';
     ctx.beginPath();
     ctx.arc(px, H - 19, 4, 0, Math.PI * 2);
     ctx.fill();
@@ -758,7 +762,6 @@ function drawProgressBar() {
 
 // ─── COLLISION ───
 function checkCollisions() {
-  // GÜNCELLENDİ: Çarpışma algılayıcısı yeni koordinat sistemine göre optimize edildi
   let busActualY = (H / 2 + getRoadOffset(busX)) + busLaneOffset;
 
   items.forEach(item => {
@@ -791,7 +794,6 @@ function checkStops() {
     currentStopIdx = nextStopIdx;
     nextStopIdx++;
     busSpeed = 0;
-    // Check if final stop
     if (currentStopIdx === STOPS.length - 1) {
       setTimeout(() => showEndScreen(), 2000);
     }
@@ -805,11 +807,11 @@ function showEndScreen() {
   overlay.innerHTML = `
     <div style="font-size:52px;margin-bottom:8px">🎉</div>
     <h1 style="font-size:32px;margin-bottom:12px">Ankara'ya Vardık!</h1>
-    <div style="background:rgba(220,50,50,0.15);border:1px solid rgba(220,50,50,0.4);border-radius:12px;padding:20px 28px;color:rgba(255,255,255,0.9);font-size:15px;line-height:2;margin-bottom:20px;">
-      ⭐ Toplam Puan: <strong style="color:#ffd700;font-size:22px">${score}</strong><br>
-      🚌 Tüm duraklar tamamlandı!
+    <div style="background:rgba(225,29,72,0.1);border:1px solid rgba(225,29,72,0.3);border-radius:12px;padding:20px 28px;color:#f8fafc;font-size:15px;line-height:2;margin-bottom:20px;">
+      ⭐ Toplam Puan: <strong style="color:#eab308;font-size:22px">${score}</strong><br>
+      🚌 Tüm duraklar başarıyla tamamlandı!
     </div>
-    <div style="background:rgba(255,180,200,0.12);border:1px solid rgba(255,150,180,0.35);border-radius:16px;padding:22px 30px;max-width:420px;color:#fff;font-size:15px;line-height:1.9;margin-bottom:24px;">
+    <div style="background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.25);border-radius:16px;padding:22px 30px;max-width:420px;color:#fff;font-size:15px;line-height:1.9;margin-bottom:24px;">
       💌 <em>Pamukkale'de başlayan yolculuk, her zaman devam eder.<br>
       2. ayın kutlu olsun — bu yolda seninle olmak güzel. 🐱🦈</em>
     </div>
@@ -838,37 +840,34 @@ function update(dt) {
   let s2 = Math.floor(timeLeft % 60);
   timerDisplay.textContent = m + ':' + String(s2).padStart(2, '0');
 
-  // GÜNCELLENDİ: Yeni pürüzsüz hızlanma ve fren kontrolü
+  // GÜNCELLENDİ: Yeni kontrol şeması (D: Gaz, A: Fren)
   const MAX_SPEED = 5;
-  if (keys['ArrowUp'] || keys['Space'] || keys['KeyW']) {
+  if (keys['KeyD']) {
     busSpeed = Math.min(busSpeed + 0.12, MAX_SPEED);
     engineShake = 1;
-  } else if (keys['ArrowDown'] || keys['KeyS']) {
+  } else if (keys['KeyA']) {
     busSpeed = Math.max(busSpeed - 0.18, 0);
     engineShake = 0;
   } else {
-    // Sabit hız dengesine yavaşça veya hızlıysa pürüzsüz dön
     if (busSpeed > 1.5) busSpeed = Math.max(busSpeed - 0.04, 1.5);
     else if (busSpeed < 1.5) busSpeed = Math.min(busSpeed + 0.04, 1.5);
     engineShake = 0.3;
   }
 
-  // GÜNCELLENDİ: Yeni şerit değiştirme (Lane) kontrolleri
+  // GÜNCELLENDİ: Yeni kontrol şeması (W: Yukarı şerit, S: Aşağı şerit)
   const LANE_SPEED = 200 * dt;
-  if (keys['ArrowLeft'] || keys['KeyA']) {
+  if (keys['KeyW']) {
     busLaneOffset -= LANE_SPEED;
   }
-  if (keys['ArrowRight'] || keys['KeyD']) {
+  if (keys['KeyS']) {
     busLaneOffset += LANE_SPEED;
   }
-  // Otobüsün yoldan çıkmasını engelleme limitleri
   busLaneOffset = Math.max(-70, Math.min(70, busLaneOffset));
 
-  // GÜNCELLENDİ: Zeno'nun Paradoksu hatasının düzeltimi (Duraklara varış)
+  // Durak yavaşlaması (Zeno Paradoksu Çözümü)
   if (nextStopIdx < STOPS.length) {
     let distToStop = STOPS[nextStopIdx].x - busX;
     if (distToStop < 150 && distToStop > 0) {
-      // Hızın sıfırlanıp durakta kilitlenmemesi için minimum 0.8 hız ayarlandı
       busSpeed = Math.min(busSpeed, Math.max(0.8, distToStop / 30));
     }
   }
@@ -876,7 +875,6 @@ function update(dt) {
   busX += busSpeed;
   if (busX > WORLD_END) busX = WORLD_END;
 
-  // Camera
   cameraX = busX - W / 2;
 
   checkCollisions();
@@ -896,6 +894,7 @@ function update(dt) {
 function render(t) {
   ctx.clearRect(0, 0, W, H);
   drawSky();
+  drawParallaxMountains(); // Yeni el yapımı dağ paralaksı katmanı
   drawGround();
   drawClouds(0.016);
   drawHorizon();
@@ -922,7 +921,7 @@ document.getElementById('startBtn').addEventListener('click', () => {
   generateWorld();
   state = 'playing';
   busX = 0;
-  busLaneOffset = 0; // GÜNCELLENDİ: Resetlendiğinde şeridi sıfırla
+  busLaneOffset = 0; 
   cameraX = -W / 2;
   busSpeed = 1.5;
   score = 0;
@@ -932,7 +931,7 @@ document.getElementById('startBtn').addEventListener('click', () => {
   atStop = false;
   scoreDisplay.textContent = '0';
   stopDisplay.textContent = '🚌 Denizli → Ankara';
-  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('overlay').style.style.display = 'none';
   requestAnimationFrame(ts => { lastTime = ts; requestAnimationFrame(loop); });
 });
 </script>
