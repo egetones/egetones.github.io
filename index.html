@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pamukkale Yolculuğu 🚌</title>
+<title>Route to You <3</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap');
 
@@ -210,11 +210,13 @@ const STOPS = [
 const WORLD_END = 14000;
 
 // ─── ITEMS ───
+// GÜNCELLENDİ: Kitap isimleri revize edildi ve Siyah Kot Ceket eklendi
 const ITEM_TYPES = [
   { emoji: '✒️', label: 'Pembe Dolma Kalem', color: '#ff69b4', pts: 10 },
   { emoji: '🖱️', label: 'Pembe Mouse', color: '#ff8fc8', pts: 10 },
-  { emoji: '📕', label: 'Kırmızı Kitap', color: '#e74c3c', pts: 15 },
-  { emoji: '📒', label: 'Sarı Kitap', color: '#f1c40f', pts: 15 },
+  { emoji: '📕', label: 'Fahrenheit 451', color: '#e74c3c', pts: 15 },
+  { emoji: '📒', label: 'Körlük', color: '#f1c40f', pts: 15 },
+  { emoji: '🧥', label: 'Siyah Kot Ceket', color: '#475569', pts: 20 },
   { emoji: '⭐', label: 'Yıldızlı Küpe', color: '#ffd700', pts: 20 },
   { emoji: '🐱', label: 'Ankara Magnet', color: '#fff', pts: 25 },
   { emoji: '🦈', label: 'Mavi Peluş', color: '#5bc8f5', pts: 20 },
@@ -256,12 +258,10 @@ function generateWorld() {
   clouds = [];
   parallaxMountains = [];
 
-  // YOL KAVİSLERİ: Dağlara çarpmasın diye genliği 45 olarak ayarlandı
   for (let x = 0; x <= WORLD_END + 800; x += 200) {
     roadCurve.push({ x, offset: Math.sin(x * 0.0008) * 45 });
   }
 
-  // DAĞLAR: Yeni ufuk çizgisine göre boyutlandırıldı
   for (let i = 0; i < 60; i++) {
     parallaxMountains.push({
       wx: i * 250 + Math.random() * 80,
@@ -292,7 +292,6 @@ function generateWorld() {
     bgObjects.push({ wx, side, type, scale: 0.6 + Math.random() * 0.5 });
   }
 
-  // BULUTLAR: Sadece yeni gökyüzü alanında çıkacak şekilde y ekseni düzenlendi
   for (let i = 0; i < 40; i++) {
     clouds.push({
       wx: Math.random() * WORLD_END,
@@ -377,7 +376,7 @@ function drawParallaxMountains() {
       let sx = m.wx - cameraX * scrollFactor;
       if (sx < -m.width) sx += WORLD_END;
       
-      let sy = H * 0.25; // Dağlar yeni ufuk çizgisine oturtuldu
+      let sy = H * 0.25; 
       ctx.beginPath();
       ctx.moveTo(sx, sy);
       ctx.lineTo(sx + m.width / 2, sy - m.height);
@@ -389,7 +388,7 @@ function drawParallaxMountains() {
 }
 
 function drawGround() {
-  let groundY = H * 0.22; // Zeminin başlangıç noktası yukarı çekildi (Boşluk kalmasın diye)
+  let groundY = H * 0.22; 
   let grad = ctx.createLinearGradient(0, groundY, 0, H);
   grad.addColorStop(0, '#475569'); 
   grad.addColorStop(0.05, '#22c55e');
@@ -433,7 +432,6 @@ function drawRoad() {
   ctx.save();
   const ROAD_W = 180;
   
-  // TİTREME (JIGGLE) ÇÖZÜMÜ: Çizim döngüsü 8 piksellik sabit Grid'e (Izgaraya) kilitlendi
   let step = 8;
   let startX = Math.floor(cameraX / step) * step - 24;
   let endX = startX + W + 48;
@@ -455,7 +453,6 @@ function drawRoad() {
   ctx.fillStyle = '#334155';
   ctx.fill();
 
-  // Emniyet Şeritleri (Beyaz)
   [-1, 1].forEach(side => {
     ctx.beginPath();
     let s2 = false;
@@ -475,7 +472,6 @@ function drawRoad() {
     ctx.fill();
   });
 
-  // Yol Kesik Çizgileri - Çizgiler de 6 piksellik Grid'e kilitlendi
   ctx.setLineDash([25, 20]);
   ctx.strokeStyle = '#fef08a';
   ctx.lineWidth = 3;
@@ -743,7 +739,6 @@ function drawProgressBar() {
   });
 }
 
-// ─── COLLISION ───
 function checkCollisions() {
   let busActualY = (H / 2 + getRoadOffset(busX)) + busLaneOffset;
 
@@ -784,6 +779,7 @@ function checkStops() {
 }
 
 // ─── END SCREEN ───
+// GÜNCELLENDİ: Final kutlama metni yeni şiirsel mesaj ile değiştirildi
 function showEndScreen() {
   state = 'end';
   const overlay = document.getElementById('overlay');
@@ -795,15 +791,16 @@ function showEndScreen() {
       🚌 Tüm duraklar başarıyla tamamlandı!
     </div>
     <div style="background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.25);border-radius:16px;padding:22px 30px;max-width:420px;color:#fff;font-size:15px;line-height:1.9;margin-bottom:24px;">
-      💌 <em>Pamukkale'de başlayan yolculuk, her zaman devam eder.<br>
-      2. ayın kutlu olsun — bu yolda seninle olmak güzel. 🐱🦈</em>
+      💌 <em>Bu yolculukta en güzel şey manzara değil,<br>
+      yan koltukta senin olman.<br>
+      2. ayımız kutlu olsun. ❤️<br>
+      -No.38</em>
     </div>
     <button class="btn" onclick="location.reload()">YENİDEN OYNA 🚌</button>
   `;
   overlay.style.display = 'flex';
 }
 
-// ─── UPDATE ───
 function update(dt) {
   if (state === 'stopped') {
     stopTimer -= dt;
@@ -868,7 +865,6 @@ function update(dt) {
   particles = particles.filter(p => p.life > 0);
 }
 
-// ─── RENDER ───
 function render(t) {
   ctx.clearRect(0, 0, W, H);
   drawSky();
@@ -885,7 +881,6 @@ function render(t) {
   drawProgressBar();
 }
 
-// ─── LOOP ───
 function loop(ts) {
   let dt = Math.min((ts - lastTime) / 1000, 0.05);
   lastTime = ts;
@@ -894,7 +889,6 @@ function loop(ts) {
   requestAnimationFrame(loop);
 }
 
-// ─── START ───
 document.getElementById('startBtn').addEventListener('click', () => {
   generateWorld();
   state = 'playing';
