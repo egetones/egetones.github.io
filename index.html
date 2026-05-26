@@ -241,9 +241,8 @@ const ITEM_TYPES = [
 let state = 'menu'; // menu | playing | stopped | end
 let score = 0;
 let busX = 0; // world x
-let busLane = H / 2; // screen Y
+let busLaneOffset = 0; // Şerit sapmasını kontrol eden YENİ değişken
 let busSpeed = 0;
-let busTargetLane = H / 2;
 let cameraX = 0;
 let timeLeft = 300; // 5 minutes
 let lastTime = 0;
@@ -278,9 +277,11 @@ function generateWorld() {
     // skip if near a stop
     let nearStop = STOPS.some(s => Math.abs(s.x - wx) < 300);
     if (nearStop) continue;
-    let lane = H / 2 + (Math.random() < 0.5 ? -1 : 1) * (30 + Math.random() * 50);
+    
+    // GÜNCELLENDİ: Eşyaların havada süzülmemesi için kavisli yol offset'i hesaplaması
+    let laneOffset = (Math.random() < 0.5 ? -1 : 1) * (15 + Math.random() * 50);
     let type = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
-    items.push({ wx, lane, type, collected: false, bobOffset: Math.random() * Math.PI * 2 });
+    items.push({ wx, laneOffset, type, collected: false, bobOffset: Math.random() * Math.PI * 2 });
   }
 
   // BG objects
@@ -313,7 +314,7 @@ function getRoadOffset(wx) {
 
 // ─── INPUT ───
 const keys = {};
-window.addEventListener('keydown', e => { keys[e.code] = true; e.preventDefault(); });
+window.addEventListener('keydown', e => { keys[e.code] = true; if(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault(); });
 window.addEventListener('keyup', e => { keys[e.code] = false; });
 
 // ─── STOP BANNER ───
@@ -560,7 +561,8 @@ function drawStopSign(stopObj) {
 function drawBus() {
   let busRoadY = H / 2 + getRoadOffset(busX);
   let sx = W / 2 + (atStop ? 0 : engineShake * (Math.random() - 0.5));
-  let sy = busRoadY;
+  // GÜNCELLENDİ: Otobüs artık şerit sapmasıyla yolda hareket edebilir
+  let sy = busRoadY + busLaneOffset;
 
   busAnim += 0.15;
 
@@ -684,8 +686,11 @@ function drawItems(t) {
     if (item.collected) return;
     let sx = item.wx - cameraX;
     if (sx < -40 || sx > W + 40) return;
+    
+    // GÜNCELLENDİ: Eşyalar artık kavisli yola uyumlu duruyor
     let roadY = H / 2 + getRoadOffset(item.wx);
-    let sy = item.lane + Math.sin(t * 2 + item.bobOffset) * 6;
+    let sy = roadY + item.laneOffset + Math.sin(t * 2 + item.bobOffset) * 6;
+    
     // Glow
     ctx.save();
     ctx.globalAlpha = 0.35;
@@ -753,11 +758,15 @@ function drawProgressBar() {
 
 // ─── COLLISION ───
 function checkCollisions() {
-  let busRoadY = H / 2 + getRoadOffset(busX);
+  // GÜNCELLENDİ: Çarpışma algılayıcısı yeni koordinat sistemine göre optimize edildi
+  let busActualY = (H / 2 + getRoadOffset(busX)) + busLaneOffset;
+
   items.forEach(item => {
     if (item.collected) return;
     let dx = item.wx - busX;
-    let dy = item.lane - busRoadY;
+    let itemActualY = (H / 2 + getRoadOffset(item.wx)) + item.laneOffset;
+    let dy = itemActualY - busActualY;
+
     if (Math.abs(dx) < 45 && Math.abs(dy) < 40) {
       item.collected = true;
       score += item.type.pts;
@@ -778,7 +787,6 @@ function checkStops() {
     stopTimer = 2.5;
     state = 'stopped';
     showStopBanner(nextStop.name);
-    stopDisplay.querySelector ? null : null;
     stopDisplay.textContent = '📍 ' + nextStop.name;
     currentStopIdx = nextStopIdx;
     nextStopIdx++;
@@ -830,7 +838,7 @@ function update(dt) {
   let s2 = Math.floor(timeLeft % 60);
   timerDisplay.textContent = m + ':' + String(s2).padStart(2, '0');
 
-  // Speed
+  // GÜNCELLENDİ: Yeni pürüzsüz hızlanma ve fren kontrolü
   const MAX_SPEED = 5;
   if (keys['ArrowUp'] || keys['Space'] || keys['KeyW']) {
     busSpeed = Math.min(busSpeed + 0.12, MAX_SPEED);
@@ -839,15 +847,29 @@ function update(dt) {
     busSpeed = Math.max(busSpeed - 0.18, 0);
     engineShake = 0;
   } else {
-    busSpeed = Math.max(busSpeed - 0.04, 1.5); // auto-roll
+    // Sabit hız dengesine yavaşça veya hızlıysa pürüzsüz dön
+    if (busSpeed > 1.5) busSpeed = Math.max(busSpeed - 0.04, 1.5);
+    else if (busSpeed < 1.5) busSpeed = Math.min(busSpeed + 0.04, 1.5);
     engineShake = 0.3;
   }
 
-  // Slow near stops
+  // GÜNCELLENDİ: Yeni şerit değiştirme (Lane) kontrolleri
+  const LANE_SPEED = 200 * dt;
+  if (keys['ArrowLeft'] || keys['KeyA']) {
+    busLaneOffset -= LANE_SPEED;
+  }
+  if (keys['ArrowRight'] || keys['KeyD']) {
+    busLaneOffset += LANE_SPEED;
+  }
+  // Otobüsün yoldan çıkmasını engelleme limitleri
+  busLaneOffset = Math.max(-70, Math.min(70, busLaneOffset));
+
+  // GÜNCELLENDİ: Zeno'nun Paradoksu hatasının düzeltimi (Duraklara varış)
   if (nextStopIdx < STOPS.length) {
     let distToStop = STOPS[nextStopIdx].x - busX;
     if (distToStop < 150 && distToStop > 0) {
-      busSpeed = Math.min(busSpeed, distToStop / 30);
+      // Hızın sıfırlanıp durakta kilitlenmemesi için minimum 0.8 hız ayarlandı
+      busSpeed = Math.min(busSpeed, Math.max(0.8, distToStop / 30));
     }
   }
 
@@ -900,6 +922,7 @@ document.getElementById('startBtn').addEventListener('click', () => {
   generateWorld();
   state = 'playing';
   busX = 0;
+  busLaneOffset = 0; // GÜNCELLENDİ: Resetlendiğinde şeridi sıfırla
   cameraX = -W / 2;
   busSpeed = 1.5;
   score = 0;
