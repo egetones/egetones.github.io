@@ -182,12 +182,12 @@
   <div id="itemPopup">+10 Pembe Kalem! ✒️</div>
 
   <div id="overlay">
-    <h1>🚌 Pamukkale Yolculuğu</h1>
+    <h1>Pamukkale Yolculuğu</h1>
     <p class="sub">Denizli'den Ankara'ya, anılarla dolu bir yolculuk...</p>
     <div class="route-info">
       📍 Denizli → Dazkırı → Kaptan Mola → Dinar → Sandıklı → Afyon → Polatlı → 🏁 Ankara
     </div>
-    <button class="btn" id="startBtn">YOLA ÇIK! 🚌</button>
+    <button class="btn" id="startBtn">Ege ile tanış</button>
   </div>
 </div>
 
@@ -244,7 +244,7 @@ let particles = [];
 let bgObjects = [];
 let roadCurve = []; 
 let clouds = [];
-let parallaxMountains = []; // Kaliteli paralaks dağ dizisi
+let parallaxMountains = []; 
 let busAnim = 0; 
 let engineShake = 0;
 
@@ -375,7 +375,7 @@ function drawParallaxMountains() {
   // Arka Plan Dağ Katmanları (Gerçekçi paralaks derinliği için)
   for (let layer = 0; layer < 2; layer++) {
     ctx.fillStyle = layer === 0 ? '#cbd5e1' : '#94a3b8';
-    let scrollFactor = layer === 0 ? 0.12 : 0.25; // Katman hız farklılıkları
+    let scrollFactor = layer === 0 ? 0.12 : 0.25; 
 
     parallaxMountains.forEach(m => {
       if (m.layer !== layer) return;
@@ -396,7 +396,7 @@ function drawParallaxMountains() {
 
 function drawGround() {
   let grad = ctx.createLinearGradient(0, H * 0.5, 0, H);
-  grad.addColorStop(0, '#475569'); // Ufuk çizgisine yakın yumuşak geçişli zemin tonu
+  grad.addColorStop(0, '#475569'); 
   grad.addColorStop(0.05, '#22c55e');
   grad.addColorStop(0.5, '#16a34a');
   grad.addColorStop(1, '#15803d');
@@ -428,7 +428,6 @@ function drawRoad() {
   ctx.save();
   const ROAD_W = 180;
 
-  // Asfalt rengi jenerik yapay zeka grisinden premium füme/asfalt rengine geçirildi
   ctx.beginPath();
   let started = false;
   for (let wx = cameraX - 20; wx <= cameraX + W + 20; wx += 8) {
@@ -487,7 +486,6 @@ function drawBGObjects() {
     let sx = obj.wx - cameraX;
     if (sx < -60 || sx > W + 60) return;
     
-    // Nesneler yolun viraj dalgasına göre mükemmel bir konumda hizalanır
     let roadY = H / 2 + getRoadOffset(obj.wx);
     let sy = roadY + obj.side * (110 + Math.random() * 10);
 
@@ -625,7 +623,6 @@ function drawBus() {
   ctx.roundRect(BW / 2 - 20, -BH / 2 + 2, 16, 20, 3);
   ctx.fill();
 
-  // GÜNCELLENDİ: PAMUKKALE yazısı sadece beyaz orta alanda kalacak şekilde küçültüldü ve ortalandı
   ctx.fillStyle = '#e11d48';
   ctx.font = 'bold 7.5px "Baloo 2", cursive';
   ctx.textAlign = 'center';
@@ -840,7 +837,7 @@ function update(dt) {
   let s2 = Math.floor(timeLeft % 60);
   timerDisplay.textContent = m + ':' + String(s2).padStart(2, '0');
 
-  // GÜNCELLENDİ: Yeni kontrol şeması (D: Gaz, A: Fren)
+  // Kontroller (D: Gaz, A: Fren)
   const MAX_SPEED = 5;
   if (keys['KeyD']) {
     busSpeed = Math.min(busSpeed + 0.12, MAX_SPEED);
@@ -854,7 +851,7 @@ function update(dt) {
     engineShake = 0.3;
   }
 
-  // GÜNCELLENDİ: Yeni kontrol şeması (W: Yukarı şerit, S: Aşağı şerit)
+  // Kontroller (W: Yukarı şerit, S: Aşağı şerit)
   const LANE_SPEED = 200 * dt;
   if (keys['KeyW']) {
     busLaneOffset -= LANE_SPEED;
@@ -894,7 +891,7 @@ function update(dt) {
 function render(t) {
   ctx.clearRect(0, 0, W, H);
   drawSky();
-  drawParallaxMountains(); // Yeni el yapımı dağ paralaksı katmanı
+  drawParallaxMountains(); 
   drawGround();
   drawClouds(0.016);
   drawHorizon();
@@ -931,7 +928,8 @@ document.getElementById('startBtn').addEventListener('click', () => {
   atStop = false;
   scoreDisplay.textContent = '0';
   stopDisplay.textContent = '🚌 Denizli → Ankara';
-  document.getElementById('overlay').style.style.display = 'none';
+  // Hata düzeltildi: style.style.display yerine style.display
+  document.getElementById('overlay').style.display = 'none';
   requestAnimationFrame(ts => { lastTime = ts; requestAnimationFrame(loop); });
 });
 </script>
