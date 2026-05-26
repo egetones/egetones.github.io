@@ -210,7 +210,6 @@ const STOPS = [
 const WORLD_END = 14000;
 
 // ─── ITEMS ───
-// GÜNCELLENDİ: Kitap isimleri revize edildi ve Siyah Kot Ceket eklendi
 const ITEM_TYPES = [
   { emoji: '✒️', label: 'Pembe Dolma Kalem', color: '#ff69b4', pts: 10 },
   { emoji: '🖱️', label: 'Pembe Mouse', color: '#ff8fc8', pts: 10 },
@@ -277,19 +276,24 @@ function generateWorld() {
     let nearStop = STOPS.some(s => Math.abs(s.x - wx) < 300);
     if (nearStop) continue;
     
-    let laneOffset = (Math.random() < 0.5 ? -1 : 1) * (15 + Math.random() * 50);
+    // ROAD_W = 180, half = 90. Tight clamp: max ±55 so bob(±6) + laneOffset never exceeds ±72 < 90
+    let laneOffset = (Math.random() < 0.5 ? -1 : 1) * (8 + Math.random() * 47);
     let type = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
     items.push({ wx, laneOffset, type, collected: false, bobOffset: Math.random() * Math.PI * 2 });
   }
 
-  for (let i = 0; i < 250; i++) {
+  // FIX: store fixed sideOffset at generation time, not in draw (prevents jiggle)
+  // INCREASED: 250 -> 400 objects
+  for (let i = 0; i < 400; i++) {
     let wx = Math.random() * WORLD_END;
     let nearStop = STOPS.some(s => Math.abs(s.x - wx) < 120);
     if (nearStop) continue;
 
     let side = Math.random() < 0.5 ? -1 : 1;
     let type = Math.random();
-    bgObjects.push({ wx, side, type, scale: 0.6 + Math.random() * 0.5 });
+    // Fixed perpendicular offset from road center, stored once
+    let sideOffset = side * (100 + Math.random() * 80);
+    bgObjects.push({ wx, side, type, scale: 0.6 + Math.random() * 0.5, sideOffset });
   }
 
   for (let i = 0; i < 40; i++) {
@@ -369,14 +373,14 @@ function drawSky() {
 function drawParallaxMountains() {
   for (let layer = 0; layer < 2; layer++) {
     ctx.fillStyle = layer === 0 ? '#cbd5e1' : '#94a3b8';
-    let scrollFactor = layer === 0 ? 0.12 : 0.25; 
+    let scrollFactor = layer === 0 ? 0.12 : 0.25;
 
     parallaxMountains.forEach(m => {
       if (m.layer !== layer) return;
       let sx = m.wx - cameraX * scrollFactor;
       if (sx < -m.width) sx += WORLD_END;
       
-      let sy = H * 0.25; 
+      let sy = H * 0.25;
       ctx.beginPath();
       ctx.moveTo(sx, sy);
       ctx.lineTo(sx + m.width / 2, sy - m.height);
@@ -388,9 +392,9 @@ function drawParallaxMountains() {
 }
 
 function drawGround() {
-  let groundY = H * 0.22; 
+  let groundY = H * 0.22;
   let grad = ctx.createLinearGradient(0, groundY, 0, H);
-  grad.addColorStop(0, '#475569'); 
+  grad.addColorStop(0, '#475569');
   grad.addColorStop(0.05, '#22c55e');
   grad.addColorStop(0.5, '#16a34a');
   grad.addColorStop(1, '#15803d');
@@ -496,14 +500,16 @@ function drawBGObjects() {
     let sx = obj.wx - cameraX;
     if (sx < -60 || sx > W + 60) return;
     
+    // FIX: use pre-stored sideOffset instead of computing with Math.random() each frame
     let roadY = H / 2 + getRoadOffset(obj.wx);
-    let sy = roadY + obj.side * (110 + Math.random() * 10);
+    let sy = roadY + obj.sideOffset;
 
     ctx.save();
     ctx.translate(sx, sy);
     ctx.scale(obj.scale, obj.scale);
     
-    if (obj.type < 0.4) {
+    if (obj.type < 0.35) {
+      // Round tree
       ctx.fillStyle = '#78350f';
       ctx.fillRect(-3, -15, 6, 18);
       ctx.fillStyle = '#15803d';
@@ -514,14 +520,16 @@ function drawBGObjects() {
       ctx.beginPath();
       ctx.arc(0, -30, 11, 0, Math.PI * 2);
       ctx.fill();
-    } else if (obj.type < 0.75) {
+    } else if (obj.type < 0.55) {
+      // Bush
       ctx.fillStyle = '#166534';
       ctx.beginPath();
       ctx.arc(0, -6, 11, 0, Math.PI * 2);
       ctx.arc(8, -5, 8, 0, Math.PI * 2);
       ctx.arc(-8, -4, 9, 0, Math.PI * 2);
       ctx.fill();
-    } else {
+    } else if (obj.type < 0.72) {
+      // Power pole
       ctx.strokeStyle = '#475569';
       ctx.lineWidth = 2.5;
       ctx.beginPath();
@@ -539,6 +547,33 @@ function drawBGObjects() {
       ctx.moveTo(-12, -33);
       ctx.quadraticCurveTo(0, -26, 12, -33);
       ctx.stroke();
+    } else if (obj.type < 0.84) {
+      // Tall pine / cypress shape
+      ctx.fillStyle = '#78350f';
+      ctx.fillRect(-2, -2, 4, 14);
+      ctx.fillStyle = '#166534';
+      ctx.beginPath();
+      ctx.moveTo(0, -50);
+      ctx.lineTo(14, -10);
+      ctx.lineTo(-14, -10);
+      ctx.closePath();
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(0, -34);
+      ctx.lineTo(18, 2);
+      ctx.lineTo(-18, 2);
+      ctx.closePath();
+      ctx.fill();
+    } else {
+      // Rock / boulder
+      ctx.fillStyle = '#64748b';
+      ctx.beginPath();
+      ctx.ellipse(0, -4, 14, 9, 0.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#94a3b8';
+      ctx.beginPath();
+      ctx.ellipse(-4, -8, 7, 5, -0.3, 0, Math.PI * 2);
+      ctx.fill();
     }
     ctx.restore();
   });
@@ -624,7 +659,7 @@ function drawBus() {
   ctx.font = 'bold 7.5px "Baloo 2", cursive';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('PAMUKKALE', 0, -2); 
+  ctx.fillText('PAMUKKALE', 0, -2);
 
   ctx.fillStyle = '#334155';
   ctx.font = 'bold 6px Nunito';
@@ -679,6 +714,29 @@ function drawBus() {
 }
 
 function drawItems(t) {
+  const ROAD_W = 180;
+  const step = 8;
+  const startX = Math.floor(cameraX / step) * step - 24;
+  const endX = startX + W + 48;
+
+  // Clip to road polygon so items physically cannot render outside
+  ctx.save();
+  ctx.beginPath();
+  let started = false;
+  for (let wx = startX; wx <= endX; wx += step) {
+    let sx = wx - cameraX;
+    let cy = H / 2 + getRoadOffset(wx);
+    if (!started) { ctx.moveTo(sx, cy - ROAD_W / 2); started = true; }
+    else ctx.lineTo(sx, cy - ROAD_W / 2);
+  }
+  for (let wx = endX; wx >= startX; wx -= step) {
+    let sx = wx - cameraX;
+    let cy = H / 2 + getRoadOffset(wx);
+    ctx.lineTo(sx, cy + ROAD_W / 2);
+  }
+  ctx.closePath();
+  ctx.clip();
+
   items.forEach(item => {
     if (item.collected) return;
     let sx = item.wx - cameraX;
@@ -703,6 +761,8 @@ function drawItems(t) {
     ctx.textBaseline = 'middle';
     ctx.fillText(item.type.emoji, sx, sy);
   });
+
+  ctx.restore(); // remove clip
 }
 
 function drawParticles() {
@@ -778,8 +838,6 @@ function checkStops() {
   }
 }
 
-// ─── END SCREEN ───
-// GÜNCELLENDİ: Final kutlama metni yeni şiirsel mesaj ile değiştirildi
 function showEndScreen() {
   state = 'end';
   const overlay = document.getElementById('overlay');
@@ -792,7 +850,7 @@ function showEndScreen() {
     </div>
     <div style="background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.25);border-radius:16px;padding:22px 30px;max-width:420px;color:#fff;font-size:15px;line-height:1.9;margin-bottom:24px;">
       💌 <em>Bu yolculukta en güzel şey manzara değil,<br>
-      yan koltukta senin olman.<br>
+      yan koltuğumda bir ömür boyunca senin olman.<br>
       2. ayımız kutlu olsun. ❤️<br>
       -No.38</em>
     </div>
@@ -868,7 +926,7 @@ function update(dt) {
 function render(t) {
   ctx.clearRect(0, 0, W, H);
   drawSky();
-  drawParallaxMountains(); 
+  drawParallaxMountains();
   drawGround();
   drawClouds(0.016);
   drawHorizon();
@@ -893,7 +951,7 @@ document.getElementById('startBtn').addEventListener('click', () => {
   generateWorld();
   state = 'playing';
   busX = 0;
-  busLaneOffset = 0; 
+  busLaneOffset = 0;
   cameraX = -W / 2;
   busSpeed = 1.5;
   score = 0;
